@@ -21,10 +21,16 @@ export function Hero({ onContactClick, onWorkClick }: HeroProps) {
           {/* Animated line */}
           <div className="h-[2px] bg-gradient-to-r from-indigo-500 to-transparent mb-12 animate-line-expand" />
 
-          {/* Name */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 text-white opacity-0 animate-hero-reveal [animation-delay:200ms]">
-            {siteConfig.name}
-          </h1>
+          {/* Greeting */}
+          <div className="opacity-0 animate-hero-reveal [animation-delay:200ms]">
+            <p className="text-2xl md:text-3xl lg:text-4xl text-gray-300 mb-2 flex items-center gap-3">
+              Hello
+              <span className="inline-block cursor-pointer hover:animate-wave origin-[70%_70%]">👋</span>
+            </p>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 text-white">
+              I'm {siteConfig.name}
+            </h1>
+          </div>
 
           {/* Tagline */}
           <p className="text-xl md:text-2xl lg:text-3xl text-gray-400 font-normal leading-relaxed max-w-xl lg:max-w-2xl mb-12 opacity-0 animate-hero-reveal [animation-delay:500ms]">

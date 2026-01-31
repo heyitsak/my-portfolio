@@ -3,6 +3,7 @@ export const siteConfig = {
   title: 'Akhil — Freelance Engineer',
   description: 'Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.',
   email: 'your.email@example.com',
+  whatsapp: '+1234567890', // Add your WhatsApp number with country code
   social: {
     github: 'https://github.com/yourusername',
     linkedin: 'https://linkedin.com/in/yourusername',
@@ -47,7 +48,7 @@ export const projects = [
     year: '2024',
     description: 'Built and deployed an MVP for an early-stage startup, handling backend APIs, authentication, and deployment.',
     tags: ['Next.js', 'Node.js', 'PostgreSQL'],
-    image: '/projects/project-1.jpg', // Add your project image
+    image: '/projects/project-1.jpg',
     github: 'https://github.com/yourusername/project-1',
   },
   {
@@ -58,16 +59,11 @@ export const projects = [
     image: '/projects/project-2.jpg',
     github: 'https://github.com/yourusername/project-2',
   },
-  {
-    title: 'Internal Tools',
-    year: '2023',
-    description: 'Developed internal dashboards and utilities to reduce manual operational work for small teams.',
-    tags: ['React', 'Python', 'REST APIs'],
-    image: '/projects/project-3.jpg',
-    github: 'https://github.com/yourusername/project-3',
-  },
 ];
 
-export const beyondWork = "Outside of work, I enjoy riding motorcycles, traveling, and photography. These experiences help me stay curious, grounded, and thoughtful in how I approach building products and solving problems.";
+export const beyondWork = {
+  text: "Outside of work, I enjoy riding motorcycles, traveling, and photography. These experiences help me stay curious, grounded, and thoughtful in how I approach building products and solving problems.",
+  travelBlog: "https://yourtravelblog.com", // Add your travel blog URL
+};
 
 export const contactContent = "If you'd like to work together, have an idea to discuss, or need help building something, feel free to reach out.";

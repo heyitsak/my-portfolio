@@ -5,6 +5,7 @@ import { Hero } from '@/app/components/sections/Hero';
 import { About } from '@/app/components/sections/About';
 import { Services } from '@/app/components/sections/Services';
 import { Work } from '@/app/components/sections/Work';
+import { Blog } from '@/app/components/sections/Blog';
 import { BeyondWork } from '@/app/components/sections/BeyondWork';
 import { Contact } from '@/app/components/sections/Contact';
 import { PageLoader } from '@/app/components/ui/PageLoader';
@@ -31,6 +32,7 @@ export default function Home() {
           <About />
           <Services />
           <Work />
+          <Blog />
           <BeyondWork />
           <Contact />
         </div>

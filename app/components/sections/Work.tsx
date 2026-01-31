@@ -16,6 +16,25 @@ export function Work() {
             <ProjectRow key={index} {...project} index={index} isReversed={index % 2 !== 0} />
           ))}
         </StaggerContainer>
+
+        {/* Request more projects */}
+        <div className="mt-20 pt-16 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div>
+              <p className="text-gray-400 mb-1">Want to see more of my work?</p>
+              <p className="text-gray-500 text-sm">I have additional projects available upon request.</p>
+            </div>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/30 text-white font-display font-semibold rounded-lg transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap"
+            >
+              Request portfolio
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </a>
+          </div>
+        </div>
       </section>
     </ScrollReveal>
   );
