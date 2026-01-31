@@ -1,15 +1,45 @@
 @import "tailwindcss";
 
+/* Theme CSS Variables */
+:root {
+  /* Dark theme (default) */
+  --color-bg: #000000;
+  --color-bg-secondary: #0a0a0a;
+  --color-text: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-card: rgba(255, 255, 255, 0.02);
+  --color-card-hover: rgba(255, 255, 255, 0.05);
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+}
+
+:root.light {
+  /* Light theme */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-text: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #9ca3af;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-card: rgba(0, 0, 0, 0.02);
+  --color-card-hover: rgba(0, 0, 0, 0.05);
+  --color-accent: #4f46e5;
+  --color-accent-hover: #6366f1;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: #0a0a0a;
-    color: #f3f4f6;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     overflow-x: hidden;
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Headings use Space Grotesk */
@@ -30,6 +60,80 @@
 
   .font-display {
     font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Theme utility classes */
+  .bg-theme {
+    background-color: var(--color-bg);
+  }
+
+  .bg-theme-secondary {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .bg-theme-card {
+    background-color: var(--color-card);
+  }
+
+  .text-theme {
+    color: var(--color-text);
+  }
+
+  .text-theme-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-theme-muted {
+    color: var(--color-text-muted);
+  }
+
+  .border-theme {
+    border-color: var(--color-border);
+  }
+
+  .border-theme-accent {
+    border-color: var(--color-accent);
+  }
+
+  /* Gradient text - warm red to orange */
+  .text-gradient {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffa726 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
+  }
+
+  .text-gradient:hover {
+    background: linear-gradient(135deg, #ff8e53 0%, #ffa726 50%, #ffcc02 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(255, 142, 83, 0.4));
+  }
+
+  /* Gradient text with glow wrapper */
+  .text-gradient-glow {
+    position: relative;
+    display: inline-block;
+  }
+
+  .text-gradient-glow::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffa726 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .text-gradient-glow:hover::before {
+    opacity: 0.6;
   }
 }
 
@@ -82,6 +186,18 @@
   100% { transform: rotate(0deg); }
 }
 
+/* Floating animation for chatbot */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Pulse animation */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
 @layer utilities {
   .animate-wave {
     animation: wave 1s ease-in-out;
@@ -103,6 +219,14 @@
 
   .animate-loading-bar {
     animation: loading-bar 0.8s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 2s ease-out infinite;
   }
 
   .duration-400 {

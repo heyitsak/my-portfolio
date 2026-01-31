@@ -19,21 +19,22 @@ export function Hero({ onContactClick, onWorkClick }: HeroProps) {
         {/* Text Content */}
         <div className="flex-1">
           {/* Animated line */}
-          <div className="h-[2px] bg-gradient-to-r from-indigo-500 to-transparent mb-12 animate-line-expand" />
+          <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-transparent mb-12 animate-line-expand" />
 
           {/* Greeting */}
           <div className="opacity-0 animate-hero-reveal [animation-delay:200ms]">
-            <p className="text-2xl md:text-3xl lg:text-4xl text-gray-300 mb-2 flex items-center gap-3">
+            <p className="text-2xl md:text-3xl lg:text-4xl text-theme-secondary mb-2 flex items-center gap-3">
               Hello
               <span className="inline-block cursor-pointer hover:animate-wave origin-[70%_70%]">👋</span>
             </p>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 text-white">
-              I'm {siteConfig.name}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
+              <span className="text-theme">I'm </span>
+              <span className="text-gradient inline-block">{siteConfig.name}</span>
             </h1>
           </div>
 
           {/* Tagline */}
-          <p className="text-xl md:text-2xl lg:text-3xl text-gray-400 font-normal leading-relaxed max-w-xl lg:max-w-2xl mb-12 opacity-0 animate-hero-reveal [animation-delay:500ms]">
+          <p className="text-xl md:text-2xl lg:text-3xl text-theme-secondary font-normal leading-relaxed max-w-xl lg:max-w-2xl mb-12 opacity-0 animate-hero-reveal [animation-delay:500ms]">
             {siteConfig.description}
           </p>
 
@@ -49,7 +50,7 @@ export function Hero({ onContactClick, onWorkClick }: HeroProps) {
 
             <button
               onClick={onWorkClick}
-              className="relative px-8 py-4 text-gray-300 font-display font-semibold transition-all duration-300 hover:text-white after:content-[''] after:absolute after:bottom-3 after:left-8 after:right-8 after:h-[2px] after:bg-gradient-to-r after:from-indigo-500 after:to-purple-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left"
+              className="relative px-8 py-4 text-theme-secondary font-display font-semibold transition-all duration-300 hover:text-theme after:content-[''] after:absolute after:bottom-3 after:left-8 after:right-8 after:h-[2px] after:bg-gradient-to-r after:from-indigo-500 after:to-purple-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left"
             >
               View my work
             </button>
@@ -63,7 +64,7 @@ export function Hero({ onContactClick, onWorkClick }: HeroProps) {
             <div className="absolute -inset-1 bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-indigo-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             {/* Image container */}
-            <div className="relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:h-72 rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-gray-800 to-gray-900">
+            <div className="relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:h-72 rounded-2xl overflow-hidden border border-theme bg-theme-secondary">
               {!imageError ? (
                 <Image
                   src="/profile.jpg"
@@ -76,12 +77,12 @@ export function Hero({ onContactClick, onWorkClick }: HeroProps) {
               ) : (
                 /* Fallback - stylish initials */
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-600/20 to-purple-600/20">
-                  <span className="text-6xl md:text-7xl font-light text-white/80">{initials}</span>
+                  <span className="text-6xl md:text-7xl font-light text-theme/80">{initials}</span>
                 </div>
               )}
 
               {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
             {/* Decorative corner accents */}
@@ -90,7 +91,6 @@ export function Hero({ onContactClick, onWorkClick }: HeroProps) {
           </div>
         </div>
       </div>
-
-          </section>
+    </section>
   );
 }

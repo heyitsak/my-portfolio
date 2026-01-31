@@ -9,7 +9,7 @@ export function BeyondWork() {
     <ScrollReveal>
       <section className="mb-40">
         <SectionHeading>Beyond work</SectionHeading>
-        <p className="text-base md:text-lg text-gray-400 leading-relaxed mb-8">
+        <p className="text-base md:text-lg text-theme-secondary leading-relaxed mb-8">
           {beyondWork.text}
         </p>
 
@@ -25,7 +25,7 @@ export function BeyondWork() {
           </span>
           <div>
             <span className="font-display font-semibold block">Read my travel stories</span>
-            <span className="text-sm text-gray-500">Adventures, photography & more</span>
+            <span className="text-sm text-theme-muted">Adventures, photography & more</span>
           </div>
           <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

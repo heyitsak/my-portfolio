@@ -14,7 +14,7 @@ export function Contact() {
         <SectionHeading>Get in touch</SectionHeading>
 
         <div className="space-y-10">
-          <p className="text-base md:text-lg text-gray-400 leading-relaxed">
+          <p className="text-base md:text-lg text-theme-secondary leading-relaxed">
             {contactContent}
           </p>
 
@@ -54,9 +54,9 @@ export function Contact() {
           </div>
 
           {/* Footer */}
-          <footer className="pt-16 mt-16 border-t border-gray-800/50">
+          <footer className="pt-16 mt-16 border-t border-theme">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-theme-muted">
                 © {new Date().getFullYear()} {siteConfig.name}. Built with Next.js.
               </p>
 
@@ -87,7 +87,7 @@ function SocialLink({ href, label, children }: { href: string; label: string; ch
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="p-2 text-gray-500 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300 hover:scale-110"
+      className="p-2 text-theme-muted hover:text-theme hover:bg-theme-card rounded-lg transition-all duration-300 hover:scale-110"
     >
       {children}
     </a>

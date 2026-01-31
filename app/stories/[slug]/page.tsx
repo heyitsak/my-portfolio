@@ -64,7 +64,7 @@ export default async function StoryPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-gray-100">
+    <main className="min-h-screen text-gray-100 relative">
       <article className="max-w-3xl mx-auto px-6 md:px-12 py-20 md:py-32">
         {/* Back link */}
         <Link
@@ -89,8 +89,8 @@ export default async function StoryPage({ params }: PageProps) {
             {story.date}
           </div>
 
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-            {story.title}
+          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold">
+            <span className="text-gradient">{story.title}</span>
           </h1>
         </header>
 

@@ -1,55 +1,20 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { blogPosts } from '@/app/data/content';
 
 export const metadata: Metadata = {
   title: 'Blog — Akhil',
   description: 'Thoughts on tech, startups, and building products.',
 };
 
-// Blog posts data - move to data/blog.ts when you have more posts
-const posts = [
-  {
-    slug: 'building-mvps-that-ship',
-    title: 'Building MVPs That Actually Ship',
-    excerpt: 'Lessons learned from helping startups go from idea to launched product in weeks, not months.',
-    category: 'Startups',
-    date: 'Jan 15, 2024',
-    readTime: '5 min read',
-  },
-  {
-    slug: 'automating-workflows-with-ai',
-    title: 'Automating Workflows with AI',
-    excerpt: 'How I use AI tools to automate repetitive tasks and save hours every week.',
-    category: 'AI',
-    date: 'Dec 20, 2023',
-    readTime: '4 min read',
-  },
-  {
-    slug: 'tech-stack-2024',
-    title: 'The Tech Stack I Use in 2024',
-    excerpt: 'My go-to tools, frameworks, and services for building modern web applications.',
-    category: 'Tech',
-    date: 'Nov 10, 2023',
-    readTime: '6 min read',
-  },
-  {
-    slug: 'ecommerce-integration-patterns',
-    title: 'E-commerce Integration Patterns',
-    excerpt: 'Best practices for integrating payment gateways and managing order workflows.',
-    category: 'Tech',
-    date: 'Oct 5, 2023',
-    readTime: '7 min read',
-  },
-];
-
 export default function BlogPage() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-gray-100">
+    <main className="min-h-screen text-theme relative">
       <div className="max-w-3xl lg:max-w-4xl mx-auto px-6 md:px-12 py-20 md:py-32">
         {/* Back link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors mb-12 group"
+          className="inline-flex items-center gap-2 text-theme-muted hover:text-theme transition-colors mb-12 group"
         >
           <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -58,32 +23,41 @@ export default function BlogPage() {
         </Link>
 
         {/* Header */}
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-theme">
           Blog
         </h1>
-        <p className="text-lg text-gray-400 mb-16">
+        <p className="text-lg text-theme-secondary mb-16">
           Thoughts on tech, startups, and building products.
         </p>
 
         {/* Posts list */}
         <div className="space-y-12">
-          {posts.map((post) => (
+          {blogPosts.map((post) => (
             <article key={post.slug} className="group">
               <Link href={`/blog/${post.slug}`} className="block">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="px-2 py-1 text-xs font-medium text-indigo-400 bg-indigo-500/10 rounded-md">
+                  <span className={`px-2 py-1 text-xs font-medium rounded-md ${
+                    post.featured
+                      ? 'text-indigo-300 bg-indigo-500/20'
+                      : 'text-indigo-400 bg-indigo-500/10'
+                  }`}>
                     {post.category}
                   </span>
-                  <span className="text-xs text-gray-500">{post.date}</span>
-                  <span className="text-xs text-gray-600">•</span>
-                  <span className="text-xs text-gray-500">{post.readTime}</span>
+                  {post.featured && (
+                    <span className="px-2 py-1 text-xs font-medium text-amber-400 bg-amber-500/10 rounded-md">
+                      Featured
+                    </span>
+                  )}
+                  <span className="text-xs text-theme-muted">{post.date}</span>
+                  <span className="text-xs text-theme-muted">•</span>
+                  <span className="text-xs text-theme-muted">{post.readTime}</span>
                 </div>
 
-                <h2 className="font-display text-xl md:text-2xl font-semibold text-white group-hover:text-indigo-300 transition-colors mb-2">
+                <h2 className="font-display text-xl md:text-2xl font-semibold text-theme group-hover:text-indigo-300 transition-colors mb-2">
                   {post.title}
                 </h2>
 
-                <p className="text-gray-500 leading-relaxed mb-4">
+                <p className="text-theme-secondary leading-relaxed mb-4">
                   {post.excerpt}
                 </p>
 
