@@ -16,7 +16,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: 'Creative Minds — Freelance Engineer',
-  description: 'Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.',
+  description: 'Freelance engineer helping startups build MVPs, automate workflows, with a focus on shipping fast and keeping things simple.',
 };
 
 export default function RootLayout({

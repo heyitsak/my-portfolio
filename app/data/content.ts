@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Akhil',
   title: 'Creative Minds — Freelance Engineer',
-  description: 'Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.',
+  description: 'Freelance engineer helping startups build MVPs, automate workflows, with a focus on shipping fast and keeping things simple.',
   email: 'your.email@example.com',
   whatsapp: '+1234567890', // Add your WhatsApp number with country code
   social: {
