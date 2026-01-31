@@ -1,15 +1,14 @@
 export const siteConfig = {
-  name: "Akhil",
-  title: "Creative Minds — Freelance Engineer",
-  description:
-    "Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.",
-  email: "your.email@example.com",
-  whatsapp: "+1234567890", // Add your WhatsApp number with country code
+  name: 'Creative Minds',
+  title: 'Creative Minds — Freelance Engineer',
+  description: 'Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.',
+  email: 'your.email@example.com',
+  whatsapp: '+1234567890', // Add your WhatsApp number with country code
   social: {
-    github: "https://github.com/heyitsak",
-    linkedin: "https://linkedin.com/in/akhilp1708",
-    twitter: "https://twitter.com/yourusername",
-    buyMeACoffee: "https://www.buymeacoffee.com/akhilp1708",
+    github: 'https://github.com/heyitsak',
+    linkedin: 'https://linkedin.com/in/akhilp1708',
+    twitter: 'https://twitter.com/yourusername',
+    buyMeACoffee: 'https://www.buymeacoffee.com/akhilp1708',
   },
 };
 
@@ -23,49 +22,43 @@ export const aboutContent = {
 
 export const services = [
   {
-    title: "Helping Startups Get Online with Smart Websites & AI Assistants",
-    description:
-      "I help early-stage startups launch fast, modern websites with AI assistants that understand their business and handle customer questions.",
-    color: "bg-indigo-500",
+    title: 'Helping Startups Get Online with Smart Websites & AI Assistants',
+    description: 'I help early-stage startups launch fast, modern websites with AI assistants that understand their business. The focus is on clarity, credibility, and helping teams get online quickly without unnecessary complexity.',
+    color: 'bg-indigo-500',
   },
   {
-    title: "E-commerce Websites with Secure Payments & End-to-End Setup",
-    description:
-      "I help businesses build online stores with product listings, shopping carts, and secure payment gateways. From browsing to checkout, everything is designed to be reliable and easy to manage.",
-    color: "bg-purple-500",
+    title: 'E-commerce Websites with Secure Payments & End-to-End Setup',
+    description: 'I help businesses build complete online stores with products, shopping carts, and secure payments. The focus is on smooth checkout, easy management, and systems that are ready to scale.',
+    color: 'bg-purple-500',
   },
   {
-    title: "Helping You Build Simple, Practical Mobile Applications",
-    description:
-      "I help startups and businesses create simple mobile apps for everyday needs like forms, dashboards, and integrations. The focus is on practical apps that are easy to launch and expand over time.",
-    color: "bg-blue-500",
+    title: 'Helping You Build Simple, Practical Mobile Applications',
+    description: 'I help startups and businesses create simple mobile apps for everyday needs like forms and dashboards. The focus is on practical apps that are easy to launch and expand over time.',
+    color: 'bg-blue-500',
   },
   {
-    title: "Hands-on technical support",
-    description:
-      "I support early teams with solving technical problems like debugging, integrations, architecture decisions. The focus is on simple, reliable solutions that scale smoothly over time.",
-    color: "bg-emerald-500",
+    title: 'Hands-on technical support',
+    description: 'I help early teams solve technical challenges like debugging, integrations, and architecture decisions. The focus is on simple, reliable solutions that scale smoothly as systems grow.',
+    color: 'bg-emerald-500',
   },
 ];
 
 export const projects = [
   {
-    title: "Startup MVP Platform",
-    year: "2024",
-    description:
-      "Built and deployed an MVP for an early-stage startup, handling backend APIs, authentication, and deployment.",
-    tags: ["Next.js", "Node.js", "PostgreSQL"],
-    image: "/projects/project-1.jpg",
-    github: "https://github.com/yourusername/project-1",
+    title: 'Startup MVP Platform',
+    year: '2024',
+    description: 'Built and deployed an MVP for an early-stage startup, handling backend APIs, authentication, and deployment.',
+    tags: ['Next.js', 'Node.js', 'PostgreSQL'],
+    image: '/projects/project-1.jpg',
+    github: 'https://github.com/yourusername/project-1',
   },
   {
-    title: "E-commerce Automation",
-    year: "2024",
-    description:
-      "Integrated Shopify with payment gateways and automated order and fulfillment workflows.",
-    tags: ["Shopify", "Stripe", "Webhooks"],
-    image: "/projects/project-2.jpg",
-    github: "https://github.com/yourusername/project-2",
+    title: 'E-commerce Automation',
+    year: '2024',
+    description: 'Integrated Shopify with payment gateways and automated order and fulfillment workflows.',
+    tags: ['Shopify', 'Stripe', 'Webhooks'],
+    image: '/projects/project-2.jpg',
+    github: 'https://github.com/yourusername/project-2',
   },
 ];
 
@@ -74,5 +67,4 @@ export const beyondWork = {
   travelBlog: "https://yourtravelblog.com", // Add your travel blog URL
 };
 
-export const contactContent =
-  "If you'd like to work together, have an idea to discuss, or need help building something, feel free to reach out.";
+export const contactContent = "If you'd like to work together, have an idea to discuss, or need help building something, feel free to reach out.";
