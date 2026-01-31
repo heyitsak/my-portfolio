@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    color: #f3f4f6;
+    overflow-x: hidden;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Headings use Space Grotesk */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.3);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .font-sans {
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .font-display {
+    font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+/* Hero animations */
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes line-expand {
+  from {
+    width: 0;
+  }
+  to {
+    width: 80px;
+  }
+}
+
+/* Loading bar animation */
+@keyframes loading-bar {
+  0% {
+    width: 0;
+    transform: translateX(0);
+  }
+  50% {
+    width: 100%;
+    transform: translateX(0);
+  }
+  100% {
+    width: 100%;
+    transform: translateX(100%);
+  }
+}
+
+@layer utilities {
+  .animate-hero-reveal {
+    animation: hero-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-line-expand {
+    width: 0;
+    animation: line-expand 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 1s;
+  }
+
+  .animate-loading-bar {
+    animation: loading-bar 0.8s ease-in-out infinite;
+  }
+
+  .duration-400 {
+    transition-duration: 400ms;
+  }
+
+  .duration-600 {
+    transition-duration: 600ms;
+  }
+}
