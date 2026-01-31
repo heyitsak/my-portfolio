@@ -43,7 +43,7 @@ export const services = [
   {
     title: "Hands-on technical support",
     description:
-      "I support early teams with debugging, integrations, architecture decisions, and scaling challenges.",
+      "I support early teams with solving technical problems like debugging, integrations, architecture decisions. The focus is on simple, reliable solutions that scale smoothly over time.",
     color: "bg-emerald-500",
   },
 ];
