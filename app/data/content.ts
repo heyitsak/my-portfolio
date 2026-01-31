@@ -25,19 +25,19 @@ export const services = [
   {
     title: "Helping Startups Get Online with Smart Websites & AI Assistants",
     description:
-      "I help early stage startups launch modern, fast websites paired with AI chatbots that understand their business and answer customer questions instantly. From first website to intelligent AI assistant, I make it simple to get online, look professional, and scale without complexity.",
+      "I help early-stage startups launch fast, modern websites with AI assistants that understand their business and handle customer questions.",
     color: "bg-indigo-500",
   },
   {
     title: "E-commerce Websites with Secure Payments & End-to-End Setup",
     description:
-      "I help businesses set up complete online stores with product listings, shopping carts, secure payment gateways, and order management. From browsing to checkout, I build reliable e-commerce experiences that are easy to manage and ready to scale.",
+      "I help businesses build online stores with product listings, shopping carts, and secure payment gateways. From browsing to checkout, everything is designed to be reliable and easy to manage.",
     color: "bg-purple-500",
   },
   {
     title: "Helping You Build Simple, Practical Mobile Applications",
     description:
-      "I help startups and businesses create simple, functional mobile apps for common use cases like forms, dashboards, content, and integrations. I focus on practical, doable apps that launch fast and can be expanded as your needs grow.",
+      "I help startups and businesses create simple mobile apps for everyday needs like forms, dashboards, and integrations. The focus is on practical apps that are easy to launch and expand over time.",
     color: "bg-blue-500",
   },
   {
