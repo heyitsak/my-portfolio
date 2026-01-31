@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: 'Creative Minds',
+  name: 'Akhil',
   title: 'Creative Minds — Freelance Engineer',
   description: 'Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.',
   email: 'your.email@example.com',
@@ -37,7 +37,7 @@ export const services = [
     color: 'bg-blue-500',
   },
   {
-    title: 'Hands-on technical support',
+    title: 'Helping Teams Handle Technical Challenges',
     description: 'I help early teams solve technical challenges like debugging, integrations, and architecture decisions. The focus is on simple, reliable solutions that scale smoothly as systems grow.',
     color: 'bg-emerald-500',
   },

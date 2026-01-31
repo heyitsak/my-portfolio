@@ -15,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'Akhil — Freelance Engineer',
+  title: 'Creative Minds — Freelance Engineer',
   description: 'Freelance engineer helping startups build MVPs, automate workflows, and ship reliable products.',
 };
 
