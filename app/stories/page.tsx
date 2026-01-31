@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { travelStories } from '@/app/data/stories';
+import { getAllStories } from './_posts';
 
 export const metadata: Metadata = {
   title: 'Travel Stories — Akhil',
@@ -8,6 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default function StoriesPage() {
+  const stories = getAllStories();
+
   return (
     <main className="min-h-screen text-theme relative">
       <div className="max-w-4xl lg:max-w-5xl mx-auto px-6 md:px-12 py-20 md:py-32">
@@ -32,7 +34,7 @@ export default function StoriesPage() {
 
         {/* Stories grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {travelStories.map((story) => (
+          {stories.map((story) => (
             <Link
               key={story.slug}
               href={`/stories/${story.slug}`}

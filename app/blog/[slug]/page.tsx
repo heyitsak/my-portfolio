@@ -1,18 +1,22 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { getPostBySlug, getAllSlugs } from '@/app/data/blog';
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getPostBySlug, getAllSlugs } from "../_posts";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
   if (!post) {
-    return { title: 'Post Not Found' };
+    return { title: "Post Not Found" };
   }
 
   return {
@@ -41,8 +45,18 @@ export default async function BlogPostPage({ params }: PageProps) {
           href="/blog"
           className="inline-flex items-center gap-2 text-theme-muted hover:text-theme transition-colors mb-12 group"
         >
-          <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back to blog
         </Link>
@@ -73,11 +87,15 @@ export default async function BlogPostPage({ params }: PageProps) {
             prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline
             prose-strong:text-theme prose-strong:font-semibold
             prose-ul:text-theme-secondary prose-li:my-1
-            prose-code:text-indigo-400 prose-code:bg-theme-card prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-            prose-pre:bg-theme-secondary prose-pre:border prose-pre:border-theme prose-pre:rounded-xl
-            [&_.lead]:text-xl [&_.lead]:text-theme-secondary [&_.lead]:leading-relaxed [&_.lead]:mb-8"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+            prose-ol:text-theme-secondary
+            prose-blockquote:border-indigo-500 prose-blockquote:text-theme-muted
+            prose-code:text-indigo-400 prose-code:bg-theme-card prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+            prose-pre:bg-[#1a1a2e] prose-pre:border prose-pre:border-theme prose-pre:rounded-xl"
+        >
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {post.content}
+          </ReactMarkdown>
+        </div>
       </article>
     </main>
   );

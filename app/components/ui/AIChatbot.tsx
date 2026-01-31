@@ -22,30 +22,24 @@ export function AIChatbot() {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [buttonPosition, setButtonPosition] = useState({ bottom: 24, right: 24, scale: 1, rotate: 0 });
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollY = useRef(0);
-  const scrollVelocity = useRef(0);
   const hasMounted = useRef(false);
 
   const scrollToBottom = () => {
-    // Only scroll within the chat container, not the whole page
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
 
   useEffect(() => {
-    // Skip the initial mount to prevent page scroll
     if (!hasMounted.current) {
       hasMounted.current = true;
       return;
     }
-    // Only auto-scroll when chat is open
     if (isOpen) {
       scrollToBottom();
     }
@@ -57,82 +51,21 @@ export function AIChatbot() {
     }
   }, [isOpen]);
 
-  // Move button across the screen as user scrolls - ALWAYS VISIBLE & MOVING
+  // Animate on mount and hide label after delay
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPercent = Math.min(currentScrollY / (documentHeight - windowHeight), 1);
+    // Trigger entrance animation
+    const animateTimer = setTimeout(() => {
+      setHasAnimated(true);
+    }, 500);
 
-      setIsScrolling(true);
+    // Hide the label after 5 seconds
+    const labelTimer = setTimeout(() => {
+      setShowLabel(false);
+    }, 5000);
 
-      // Calculate scroll velocity for dynamic effects
-      const scrollDelta = currentScrollY - lastScrollY.current;
-      scrollVelocity.current = scrollDelta;
-
-      // TRAVERSE across the screen:
-      // At top (0%): bottom-right corner
-      // At 25%: bottom-center-right
-      // At 50%: middle-right side
-      // At 75%: top-center-right
-      // At 100%: top-right corner
-
-      // Vertical: moves from bottom to top as you scroll down
-      const minBottom = 24;
-      const maxBottom = windowHeight - 100;
-      const newBottom = minBottom + ((1 - scrollPercent) * (maxBottom - minBottom) * 0.7);
-
-      // Horizontal: creates a wave/curve pattern as you scroll
-      // Uses sine wave to create smooth left-right movement
-      const baseRight = 24;
-      const maxHorizontalMove = Math.min(windowHeight * 0.3, 200); // Up to 200px or 30% of viewport
-      const wavePosition = Math.sin(scrollPercent * Math.PI * 2) * maxHorizontalMove;
-      const newRight = baseRight + Math.max(0, wavePosition);
-
-      // Add velocity-based wobble on top
-      const velocityWobble = Math.min(Math.max(scrollDelta * 0.8, -30), 30);
-
-      // Scale pulse effect during active scrolling
-      const scaleEffect = 1 + Math.abs(scrollDelta) * 0.003;
-      const clampedScale = Math.min(Math.max(scaleEffect, 1), 1.2);
-
-      // Rotation effect based on scroll direction
-      const rotateEffect = Math.min(Math.max(scrollDelta * 0.4, -20), 20);
-
-      setButtonPosition({
-        bottom: Math.max(minBottom, Math.min(newBottom, maxBottom)),
-        right: Math.max(24, newRight + velocityWobble),
-        scale: clampedScale,
-        rotate: rotateEffect,
-      });
-
-      lastScrollY.current = currentScrollY;
-
-      // Clear previous timeout
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
-
-      // Settle to final position smoothly after scroll stops
-      scrollTimeout.current = setTimeout(() => {
-        setIsScrolling(false);
-        // Keep the wave position but remove wobble effects
-        setButtonPosition(prev => ({
-          ...prev,
-          right: Math.max(24, baseRight + Math.max(0, wavePosition)),
-          scale: 1,
-          rotate: 0
-        }));
-      }, 200);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
+      clearTimeout(animateTimer);
+      clearTimeout(labelTimer);
     };
   }, []);
 
@@ -196,64 +129,65 @@ export function AIChatbot() {
 
   return (
     <>
-      {/* Chat Button - Moves dramatically with scroll */}
+      {/* Chat Button - Prominent and always visible */}
       <div
-        className={`fixed z-50 ${
-          isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
-        }`}
-        style={{
-          bottom: `${buttonPosition.bottom}px`,
-          right: `${buttonPosition.right}px`,
-          transform: `scale(${buttonPosition.scale}) rotate(${buttonPosition.rotate}deg)`,
-          transition: isScrolling
-            ? 'bottom 0.1s ease-out, right 0.08s ease-out, transform 0.1s ease-out, opacity 0.3s'
-            : 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        }}
+        className={`fixed z-50 bottom-6 right-6 transition-all duration-500 ${
+          isOpen ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'
+        } ${hasAnimated ? '' : 'translate-y-20 opacity-0'}`}
       >
-        {/* Pulsing attention ring */}
+        {/* Attention-grabbing glow */}
+        <div className="absolute -inset-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full opacity-60 blur-xl animate-pulse" />
+
+        {/* Pulsing ring */}
         <div
-          className="absolute inset-0 rounded-full bg-indigo-500/40"
+          className="absolute inset-0 rounded-full bg-indigo-500/50"
           style={{
-            animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+            animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite',
           }}
         />
 
+        {/* Main button */}
         <button
           onClick={() => setIsOpen(true)}
-          className="relative p-4 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
+          className="relative p-5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
           style={{
-            boxShadow: '0 10px 40px -5px rgba(99, 102, 241, 0.6), 0 4px 20px -5px rgba(0, 0, 0, 0.3)',
+            boxShadow: '0 10px 50px -5px rgba(99, 102, 241, 0.7), 0 4px 25px -5px rgba(147, 51, 234, 0.5)',
           }}
           aria-label="Open AI chat"
         >
           <div className="relative">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
             {/* Online indicator */}
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+            <span className="absolute -top-1 -right-1 flex h-4 w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2 border-indigo-600"></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-white"></span>
             </span>
           </div>
         </button>
 
-        {/* Floating label - appears prominently during scroll */}
+        {/* Floating label - shows on load */}
         <div
-          className={`absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-200 ${
-            isScrolling ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-4 scale-90 pointer-events-none'
+          className={`absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-500 ${
+            showLabel && !isOpen
+              ? 'opacity-100 translate-x-0'
+              : 'opacity-0 translate-x-4 pointer-events-none'
           }`}
         >
-          <div className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl shadow-xl animate-pulse">
-            💬 Chat with AI
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1.5 w-3 h-3 bg-purple-600 rotate-45"></div>
+          <div className="px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl shadow-xl">
+            <span className="flex items-center gap-2">
+              <span className="text-lg">👋</span>
+              Chat with AI Assistant
+            </span>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-3 h-3 bg-purple-600 rotate-45"></div>
           </div>
         </div>
       </div>
 
-      {/* Chat Window - Fixed position */}
+      {/* Chat Window */}
       <div
-        className={`fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] bg-theme border border-theme rounded-2xl shadow-2xl transition-all duration-300 overflow-hidden ${
+        className={`fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-3rem)] bg-theme border border-theme rounded-2xl shadow-2xl transition-all duration-300 overflow-hidden ${
           isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
         }`}
         style={{
@@ -261,9 +195,9 @@ export function AIChatbot() {
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-theme bg-theme-secondary">
+        <div className="flex items-center justify-between p-4 border-b border-theme bg-gradient-to-r from-indigo-600/10 to-purple-600/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -271,8 +205,8 @@ export function AIChatbot() {
             <div>
               <h3 className="font-display font-semibold text-theme">AI Assistant</h3>
               <p className="text-xs text-theme-muted flex items-center gap-1">
-                <span className="w-2 h-2 bg-green-500 rounded-full" />
-                Powered by GPT-4
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                Online now
               </p>
             </div>
           </div>
@@ -297,7 +231,7 @@ export function AIChatbot() {
               <div
                 className={`max-w-[80%] rounded-2xl px-4 py-2 ${
                   message.role === 'user'
-                    ? 'bg-indigo-600 text-white rounded-br-md'
+                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-md'
                     : 'bg-theme-card border border-theme text-theme rounded-bl-md'
                 }`}
               >
@@ -337,12 +271,12 @@ export function AIChatbot() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask me anything..."
               disabled={isTyping}
-              className="flex-1 px-4 py-2 rounded-xl bg-theme-card border border-theme text-theme placeholder:text-theme-muted focus:outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-3 rounded-xl bg-theme-card border border-theme text-theme placeholder:text-theme-muted focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:hover:bg-indigo-600 text-white rounded-xl transition-colors"
+              className="px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 disabled:hover:from-indigo-600 disabled:hover:to-purple-600 text-white rounded-xl transition-all"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

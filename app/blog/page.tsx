@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { blogPosts } from '@/app/data/blog';
+import { getAllPosts } from './_posts';
 
 export const metadata: Metadata = {
   title: 'Blog — Akhil',
@@ -8,6 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  const posts = getAllPosts();
+
   return (
     <main className="min-h-screen text-theme relative">
       <div className="max-w-3xl lg:max-w-4xl mx-auto px-6 md:px-12 py-20 md:py-32">
@@ -32,7 +34,7 @@ export default function BlogPage() {
 
         {/* Posts list */}
         <div className="space-y-12">
-          {blogPosts.map((post) => (
+          {posts.map((post) => (
             <article key={post.slug} className="group">
               <Link href={`/blog/${post.slug}`} className="block">
                 <div className="flex items-center gap-3 mb-3">

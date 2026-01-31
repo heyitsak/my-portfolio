@@ -1,18 +1,22 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { getStoryBySlug, getAllSlugs } from '@/app/data/stories';
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getStoryBySlug, getAllSlugs } from "../_posts";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const story = getStoryBySlug(slug);
 
   if (!story) {
-    return { title: 'Story Not Found' };
+    return { title: "Story Not Found" };
   }
 
   return {
@@ -41,8 +45,18 @@ export default async function StoryPage({ params }: PageProps) {
           href="/stories"
           className="inline-flex items-center gap-2 text-theme-muted hover:text-theme transition-colors mb-12 group"
         >
-          <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back to stories
         </Link>
@@ -50,9 +64,24 @@ export default async function StoryPage({ params }: PageProps) {
         {/* Header */}
         <header className="mb-12">
           <div className="flex items-center gap-2 mb-4 text-sm text-theme-muted">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
             {story.location}
             <span>•</span>
@@ -72,8 +101,11 @@ export default async function StoryPage({ params }: PageProps) {
             prose-p:text-theme-secondary prose-p:leading-relaxed
             prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline
             prose-strong:text-theme"
-          dangerouslySetInnerHTML={{ __html: story.content }}
-        />
+        >
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {story.content}
+          </ReactMarkdown>
+        </div>
       </article>
     </main>
   );

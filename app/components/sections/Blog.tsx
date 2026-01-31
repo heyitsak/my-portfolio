@@ -2,18 +2,31 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { blogPosts } from '@/app/data/blog';
 import { ScrollReveal } from '@/app/components/ui/ScrollReveal';
 import { SectionHeading } from '@/app/components/ui/SectionHeading';
 
 const categories = ['All', 'Tech', 'Startups', 'AI'];
 
-export function Blog() {
+interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  readTime: string;
+  featured?: boolean;
+}
+
+interface BlogProps {
+  posts: BlogPost[];
+}
+
+export function Blog({ posts }: BlogProps) {
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredPosts = activeCategory === 'All'
-    ? blogPosts.slice(0, 4) // Show first 4 on homepage
-    : blogPosts.filter(post => post.category === activeCategory).slice(0, 4);
+    ? posts.slice(0, 4)
+    : posts.filter(post => post.category === activeCategory).slice(0, 4);
 
   return (
     <ScrollReveal>

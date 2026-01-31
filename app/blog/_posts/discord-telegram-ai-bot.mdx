@@ -1,0 +1,52 @@
+---
+title: "Building AI Bots with Persistent Memory for Discord & Telegram"
+excerpt: "Learn how to create intelligent chatbots that remember context across conversations using vector databases and LLMs."
+category: "AI"
+date: "Jan 20, 2024"
+readTime: "8 min read"
+featured: true
+---
+
+Creating AI bots that actually remember your conversations is a game-changer for user engagement. Here's how I built persistent memory into Discord and Telegram bots.
+
+## The Problem with Stateless Bots
+
+Most chatbots treat every message as a fresh start. They have no memory of previous interactions, which leads to frustrating user experiences.
+
+## The Solution: Vector Databases + LLMs
+
+By combining vector databases (like Pinecone or Weaviate) with large language models, we can create bots that:
+
+- Remember user preferences and past conversations
+- Provide contextually relevant responses
+- Build genuine relationships with users over time
+
+## Architecture Overview
+
+1. **Embedding:** Convert messages to vector embeddings
+2. **Storage:** Store embeddings in a vector database
+3. **Retrieval:** Fetch relevant context using semantic search
+
+## Implementation
+
+```typescript
+// Store conversation in vector DB
+async function storeMessage(userId: string, message: string) {
+  const embedding = await openai.embeddings.create({
+    model: "text-embedding-ada-002",
+    input: message,
+  });
+
+  await vectorDB.upsert({
+    id: generateId(),
+    values: embedding.data[0].embedding,
+    metadata: { userId, message, timestamp: Date.now() }
+  });
+}
+```
+
+## Results
+
+User engagement increased by 3x and conversation length doubled. Users reported feeling like they were talking to a "friend who actually remembers them."
+
+Want to build something similar? [Get in touch](/#contact)!
