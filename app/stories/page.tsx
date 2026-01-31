@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { travelStories } from '@/app/data/content';
+import { travelStories } from '@/app/data/stories';
 
 export const metadata: Metadata = {
   title: 'Travel Stories — Akhil',

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { blogPosts } from '@/app/data/content';
+import { blogPosts } from '@/app/data/blog';
 import { ScrollReveal } from '@/app/components/ui/ScrollReveal';
 import { SectionHeading } from '@/app/components/ui/SectionHeading';
 

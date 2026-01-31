@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { blogPosts } from '@/app/data/content';
+import { blogPosts } from '@/app/data/blog';
 
 export const metadata: Metadata = {
   title: 'Blog — Akhil',

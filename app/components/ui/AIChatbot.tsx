@@ -21,19 +21,35 @@ export function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [isFloating, setIsFloating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [buttonPosition, setButtonPosition] = useState({ bottom: 24, right: 24, scale: 1, rotate: 0 });
+  const [isScrolling, setIsScrolling] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
+  const scrollVelocity = useRef(0);
+  const hasMounted = useRef(false);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Only scroll within the chat container, not the whole page
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    // Skip the initial mount to prevent page scroll
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    // Only auto-scroll when chat is open
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isOpen]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -41,29 +57,82 @@ export function AIChatbot() {
     }
   }, [isOpen]);
 
-  // Floating animation on scroll
+  // Move button across the screen as user scrolls - ALWAYS VISIBLE & MOVING
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const isScrolling = Math.abs(currentScrollY - lastScrollY.current) > 10;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPercent = Math.min(currentScrollY / (documentHeight - windowHeight), 1);
 
-      if (isScrolling) {
-        setIsFloating(true);
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          setIsFloating(false);
-        }, 300);
-      }
+      setIsScrolling(true);
+
+      // Calculate scroll velocity for dynamic effects
+      const scrollDelta = currentScrollY - lastScrollY.current;
+      scrollVelocity.current = scrollDelta;
+
+      // TRAVERSE across the screen:
+      // At top (0%): bottom-right corner
+      // At 25%: bottom-center-right
+      // At 50%: middle-right side
+      // At 75%: top-center-right
+      // At 100%: top-right corner
+
+      // Vertical: moves from bottom to top as you scroll down
+      const minBottom = 24;
+      const maxBottom = windowHeight - 100;
+      const newBottom = minBottom + ((1 - scrollPercent) * (maxBottom - minBottom) * 0.7);
+
+      // Horizontal: creates a wave/curve pattern as you scroll
+      // Uses sine wave to create smooth left-right movement
+      const baseRight = 24;
+      const maxHorizontalMove = Math.min(windowHeight * 0.3, 200); // Up to 200px or 30% of viewport
+      const wavePosition = Math.sin(scrollPercent * Math.PI * 2) * maxHorizontalMove;
+      const newRight = baseRight + Math.max(0, wavePosition);
+
+      // Add velocity-based wobble on top
+      const velocityWobble = Math.min(Math.max(scrollDelta * 0.8, -30), 30);
+
+      // Scale pulse effect during active scrolling
+      const scaleEffect = 1 + Math.abs(scrollDelta) * 0.003;
+      const clampedScale = Math.min(Math.max(scaleEffect, 1), 1.2);
+
+      // Rotation effect based on scroll direction
+      const rotateEffect = Math.min(Math.max(scrollDelta * 0.4, -20), 20);
+
+      setButtonPosition({
+        bottom: Math.max(minBottom, Math.min(newBottom, maxBottom)),
+        right: Math.max(24, newRight + velocityWobble),
+        scale: clampedScale,
+        rotate: rotateEffect,
+      });
 
       lastScrollY.current = currentScrollY;
+
+      // Clear previous timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
+      // Settle to final position smoothly after scroll stops
+      scrollTimeout.current = setTimeout(() => {
+        setIsScrolling(false);
+        // Keep the wave position but remove wobble effects
+        setButtonPosition(prev => ({
+          ...prev,
+          right: Math.max(24, baseRight + Math.max(0, wavePosition)),
+          scale: 1,
+          rotate: 0
+        }));
+      }, 200);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
     };
   }, []);
 
@@ -84,9 +153,8 @@ export function AIChatbot() {
     setError(null);
 
     try {
-      // Prepare messages for API (exclude initial message, include conversation history)
       const apiMessages = messages
-        .filter(m => m.id !== '1') // Exclude initial greeting
+        .filter(m => m.id !== '1')
         .concat(userMessage)
         .map(m => ({ role: m.role, content: m.content }));
 
@@ -114,7 +182,6 @@ export function AIChatbot() {
       console.error('Chat error:', err);
       setError('Failed to get response. Please try again.');
 
-      // Add fallback response
       const fallbackMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -129,29 +196,62 @@ export function AIChatbot() {
 
   return (
     <>
-      {/* Chat Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg transition-all duration-300 hover:scale-110 ${
-          isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
-        } ${isFloating ? 'animate-bounce' : ''}`}
+      {/* Chat Button - Moves dramatically with scroll */}
+      <div
+        className={`fixed z-50 ${
+          isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
         style={{
-          boxShadow: '0 10px 40px -10px rgba(99, 102, 241, 0.5)',
+          bottom: `${buttonPosition.bottom}px`,
+          right: `${buttonPosition.right}px`,
+          transform: `scale(${buttonPosition.scale}) rotate(${buttonPosition.rotate}deg)`,
+          transition: isScrolling
+            ? 'bottom 0.1s ease-out, right 0.08s ease-out, transform 0.1s ease-out, opacity 0.3s'
+            : 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
         }}
-        aria-label="Open chat"
       >
-        <div className="relative">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          {/* Pulse indicator */}
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full">
-            <span className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-75" />
-          </span>
-        </div>
-      </button>
+        {/* Pulsing attention ring */}
+        <div
+          className="absolute inset-0 rounded-full bg-indigo-500/40"
+          style={{
+            animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+          }}
+        />
 
-      {/* Chat Window */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="relative p-4 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
+          style={{
+            boxShadow: '0 10px 40px -5px rgba(99, 102, 241, 0.6), 0 4px 20px -5px rgba(0, 0, 0, 0.3)',
+          }}
+          aria-label="Open AI chat"
+        >
+          <div className="relative">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            {/* Online indicator */}
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2 border-indigo-600"></span>
+            </span>
+          </div>
+        </button>
+
+        {/* Floating label - appears prominently during scroll */}
+        <div
+          className={`absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-200 ${
+            isScrolling ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-4 scale-90 pointer-events-none'
+          }`}
+        >
+          <div className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl shadow-xl animate-pulse">
+            💬 Chat with AI
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1.5 w-3 h-3 bg-purple-600 rotate-45"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Chat Window - Fixed position */}
       <div
         className={`fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] bg-theme border border-theme rounded-2xl shadow-2xl transition-all duration-300 overflow-hidden ${
           isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
@@ -188,7 +288,7 @@ export function AIChatbot() {
         </div>
 
         {/* Messages */}
-        <div className="h-[350px] overflow-y-auto p-4 space-y-4">
+        <div ref={chatContainerRef} className="h-[350px] overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}

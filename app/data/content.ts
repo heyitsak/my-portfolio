@@ -103,88 +103,12 @@ export const testimonials = [
 ];
 
 // ============================================
-// BLOG POSTS
-// To add a new blog post:
-// 1. Add entry here with slug, title, excerpt, etc.
-// 2. Create content in /app/blog/[slug]/page.tsx
+// BLOG POSTS & TRAVEL STORIES
+// These are now stored in separate files for easier editing:
+// - Blog posts: /app/data/blog/  (one file per post)
+// - Travel stories: /app/data/stories/  (one file per story)
+// See brain.md for instructions on adding new content.
 // ============================================
-export const blogPosts = [
-  {
-    slug: 'building-mvps-that-ship',
-    title: 'Building MVPs That Actually Ship',
-    excerpt: 'Lessons learned from helping startups go from idea to launched product in weeks, not months.',
-    category: 'Startups',
-    date: 'Jan 15, 2024',
-    readTime: '5 min read',
-  },
-  {
-    slug: 'discord-telegram-ai-bot-persistent-memory',
-    title: 'Building a Discord/Telegram AI Bot with Persistent Memory',
-    excerpt: 'How I created an intelligent bot that remembers conversations and context, similar to Moltbot.',
-    category: 'AI',
-    date: 'Jan 20, 2024',
-    readTime: '8 min read',
-    featured: true,
-  },
-  {
-    slug: 'automating-workflows-with-ai',
-    title: 'Automating Workflows with AI',
-    excerpt: 'How I use AI tools to automate repetitive tasks and save hours every week.',
-    category: 'AI',
-    date: 'Dec 20, 2023',
-    readTime: '4 min read',
-  },
-  {
-    slug: 'tech-stack-2024',
-    title: 'The Tech Stack I Use in 2024',
-    excerpt: 'My go-to tools, frameworks, and services for building modern web applications.',
-    category: 'Tech',
-    date: 'Nov 10, 2023',
-    readTime: '6 min read',
-  },
-  {
-    slug: 'ecommerce-integration-patterns',
-    title: 'E-commerce Integration Patterns',
-    excerpt: 'Best practices for integrating payment gateways and managing order workflows.',
-    category: 'Tech',
-    date: 'Oct 5, 2023',
-    readTime: '7 min read',
-  },
-];
-
-// ============================================
-// TRAVEL STORIES
-// To add a new story:
-// 1. Add entry here with slug, title, excerpt, etc.
-// 2. Add images to /public/stories/
-// 3. Create content in /app/stories/[slug]/page.tsx
-// ============================================
-export const travelStories = [
-  {
-    slug: 'road-trip-mountains',
-    title: 'Road Trip Through the Mountains',
-    excerpt: 'A weekend motorcycle trip through winding mountain roads and scenic viewpoints.',
-    location: 'Western Ghats',
-    date: 'December 2023',
-    image: '/stories/mountains.jpg',
-  },
-  {
-    slug: 'coastal-photography',
-    title: 'Coastal Photography Session',
-    excerpt: 'Capturing the golden hour at some of the most beautiful beaches.',
-    location: 'Goa',
-    date: 'November 2023',
-    image: '/stories/coastal.jpg',
-  },
-  {
-    slug: 'city-exploration',
-    title: 'Urban Exploration',
-    excerpt: 'Finding hidden gems and street photography in the city.',
-    location: 'Mumbai',
-    date: 'October 2023',
-    image: '/stories/city.jpg',
-  },
-];
 
 // ============================================
 // BEYOND WORK SECTION
