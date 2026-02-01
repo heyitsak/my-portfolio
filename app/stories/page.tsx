@@ -12,7 +12,7 @@ export default function StoriesPage() {
 
   return (
     <main className="min-h-screen text-theme relative">
-      <div className="max-w-4xl lg:max-w-5xl mx-auto px-6 md:px-12 py-20 md:py-32">
+      <div className="w-full max-w-5xl lg:max-w-6xl xl:max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-32">
         {/* Back link */}
         <Link
           href="/"

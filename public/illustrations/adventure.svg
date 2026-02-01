@@ -1,0 +1,389 @@
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0629"/>
+      <stop offset="30%" style="stop-color:#1a103d"/>
+      <stop offset="60%" style="stop-color:#2d1b4e"/>
+      <stop offset="100%" style="stop-color:#4a1c6b"/>
+    </linearGradient>
+    <linearGradient id="sunsetGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b35"/>
+      <stop offset="50%" style="stop-color:#f7931e"/>
+      <stop offset="100%" style="stop-color:#ffcc00" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="mountain1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a3a6b"/>
+      <stop offset="100%" style="stop-color:#2a1a4b"/>
+    </linearGradient>
+    <linearGradient id="mountain2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5a4a7b"/>
+      <stop offset="100%" style="stop-color:#3a2a5b"/>
+    </linearGradient>
+    <linearGradient id="mountain3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3a2a5b"/>
+      <stop offset="100%" style="stop-color:#1a0a3b"/>
+    </linearGradient>
+    <linearGradient id="groundGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0f0f1a"/>
+    </linearGradient>
+    <linearGradient id="tentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff8c42"/>
+      <stop offset="100%" style="stop-color:#ff6b35"/>
+    </linearGradient>
+    <linearGradient id="bikeRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626"/>
+      <stop offset="100%" style="stop-color:#b91c1c"/>
+    </linearGradient>
+    <linearGradient id="dogFur" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a574"/>
+      <stop offset="100%" style="stop-color:#a67c52"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fffacd"/>
+      <stop offset="70%" style="stop-color:#ffeaa7" stop-opacity="0.5"/>
+      <stop offset="100%" style="stop-color:#ffeaa7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fireGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff6b35" stop-opacity="0.6"/>
+      <stop offset="100%" style="stop-color:#ff6b35" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="600" height="600" fill="url(#skyGrad)"/>
+
+  <!-- Sunset glow at horizon -->
+  <ellipse cx="300" cy="450" rx="400" ry="150" fill="url(#sunsetGrad)" opacity="0.3"/>
+
+  <!-- Stars -->
+  <g fill="#fff">
+    <circle cx="50" cy="50" r="1.5" opacity="0.9"/>
+    <circle cx="120" cy="80" r="1" opacity="0.7"/>
+    <circle cx="200" cy="40" r="1.5" opacity="0.8"/>
+    <circle cx="280" cy="70" r="1" opacity="0.6"/>
+    <circle cx="350" cy="30" r="2" opacity="0.9"/>
+    <circle cx="420" cy="60" r="1" opacity="0.7"/>
+    <circle cx="500" cy="45" r="1.5" opacity="0.8"/>
+    <circle cx="550" cy="90" r="1" opacity="0.6"/>
+    <circle cx="80" cy="130" r="1" opacity="0.5"/>
+    <circle cx="180" cy="110" r="1.5" opacity="0.7"/>
+    <circle cx="450" cy="100" r="1" opacity="0.6"/>
+    <circle cx="520" cy="130" r="1.5" opacity="0.8"/>
+    <circle cx="380" cy="120" r="1" opacity="0.5"/>
+    <circle cx="250" cy="150" r="1" opacity="0.6"/>
+    <circle cx="150" cy="170" r="1" opacity="0.5"/>
+    <circle cx="480" cy="160" r="1.5" opacity="0.7"/>
+    <!-- Twinkling stars -->
+    <circle cx="100" cy="100" r="2" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="400" cy="80" r="1.5" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.2;0.7" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="550" cy="150" r="2" opacity="0.9">
+      <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Moon with glow -->
+  <circle cx="500" cy="100" r="50" fill="url(#moonGlow)" filter="url(#softGlow)"/>
+  <circle cx="500" cy="100" r="35" fill="#ffeaa7"/>
+  <circle cx="490" cy="90" r="8" fill="#e5d99a" opacity="0.5"/>
+  <circle cx="510" cy="105" r="5" fill="#e5d99a" opacity="0.4"/>
+  <circle cx="495" cy="115" r="4" fill="#e5d99a" opacity="0.3"/>
+
+  <!-- Far mountains -->
+  <path d="M0 320 L80 220 L150 280 L250 180 L350 250 L450 150 L550 220 L600 200 L600 450 L0 450 Z" fill="url(#mountain1)" opacity="0.6"/>
+  <!-- Snow caps -->
+  <path d="M250 180 L230 210 L270 210 Z" fill="#fff" opacity="0.6"/>
+  <path d="M450 150 L425 185 L475 185 Z" fill="#fff" opacity="0.7"/>
+
+  <!-- Mid mountains -->
+  <path d="M0 380 L100 280 L180 340 L280 240 L380 300 L480 220 L560 280 L600 260 L600 450 L0 450 Z" fill="url(#mountain2)" opacity="0.8"/>
+  <path d="M280 240 L255 275 L305 275 Z" fill="#fff" opacity="0.5"/>
+  <path d="M480 220 L455 260 L505 260 Z" fill="#fff" opacity="0.5"/>
+
+  <!-- Near mountains -->
+  <path d="M0 420 L60 350 L140 390 L220 320 L320 370 L420 310 L520 360 L600 340 L600 450 L0 450 Z" fill="url(#mountain3)"/>
+
+  <!-- Ground -->
+  <rect x="0" y="420" width="600" height="180" fill="url(#groundGrad)"/>
+  <ellipse cx="300" cy="530" rx="350" ry="100" fill="#1a1a2e" opacity="0.5"/>
+
+  <!-- Pine trees (background) -->
+  <g transform="translate(40, 380)">
+    <polygon points="0,-60 -25,20 25,20" fill="#1a3a2a"/>
+    <polygon points="0,-40 -20,10 20,10" fill="#2a4a3a"/>
+    <rect x="-5" y="20" width="10" height="20" fill="#3a2a1a"/>
+  </g>
+
+  <g transform="translate(560, 390)">
+    <polygon points="0,-50 -20,15 20,15" fill="#1a3a2a"/>
+    <polygon points="0,-35 -15,8 15,8" fill="#2a4a3a"/>
+    <rect x="-4" y="15" width="8" height="15" fill="#3a2a1a"/>
+  </g>
+
+  <!-- Campfire glow on ground -->
+  <ellipse cx="450" cy="500" rx="80" ry="30" fill="url(#fireGlow)">
+    <animate attributeName="rx" values="80;90;80" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.7;1" dur="1s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Tent -->
+  <g transform="translate(480, 420)">
+    <path d="M0 60 L-50 60 L0 -30 L50 60 Z" fill="url(#tentGrad)"/>
+    <path d="M0 -30 L0 60" stroke="#c75b24" stroke-width="2"/>
+    <path d="M-15 60 L0 20 L15 60" fill="#2a2a3e"/>
+    <!-- Tent details -->
+    <path d="M-40 50 L0 -20" stroke="#db7a3e" stroke-width="1" opacity="0.5"/>
+    <path d="M40 50 L0 -20" stroke="#db7a3e" stroke-width="1" opacity="0.5"/>
+    <!-- Guy ropes -->
+    <line x1="-50" y1="60" x2="-70" y2="70" stroke="#a0a0a0" stroke-width="1"/>
+    <line x1="50" y1="60" x2="70" y2="70" stroke="#a0a0a0" stroke-width="1"/>
+  </g>
+
+  <!-- Campfire -->
+  <g transform="translate(450, 475)">
+    <!-- Fire pit rocks -->
+    <ellipse cx="0" cy="20" rx="30" ry="10" fill="#3a3a4a"/>
+    <ellipse cx="-20" cy="15" rx="8" ry="6" fill="#4a4a5a"/>
+    <ellipse cx="20" cy="15" rx="7" ry="5" fill="#5a5a6a"/>
+    <ellipse cx="0" cy="22" rx="6" ry="4" fill="#4a4a5a"/>
+
+    <!-- Logs -->
+    <rect x="-25" y="5" width="50" height="8" rx="4" fill="#5a3a2a" transform="rotate(-10)"/>
+    <rect x="-20" y="8" width="45" height="7" rx="3" fill="#4a2a1a" transform="rotate(15)"/>
+
+    <!-- Fire flames -->
+    <g filter="url(#glow)">
+      <path d="M0 5 Q-15 -20 0 -45 Q15 -20 0 5" fill="#ff6b35">
+        <animate attributeName="d" dur="0.5s" repeatCount="indefinite"
+          values="M0 5 Q-15 -20 0 -45 Q15 -20 0 5;M0 5 Q-18 -25 0 -50 Q18 -25 0 5;M0 5 Q-15 -20 0 -45 Q15 -20 0 5"/>
+      </path>
+      <path d="M-8 5 Q-20 -10 -5 -30 Q5 -10 -8 5" fill="#ffa500">
+        <animate attributeName="d" dur="0.4s" repeatCount="indefinite"
+          values="M-8 5 Q-20 -10 -5 -30 Q5 -10 -8 5;M-8 5 Q-22 -15 -5 -35 Q7 -15 -8 5;M-8 5 Q-20 -10 -5 -30 Q5 -10 -8 5"/>
+      </path>
+      <path d="M8 5 Q20 -10 5 -30 Q-5 -10 8 5" fill="#ffa500">
+        <animate attributeName="d" dur="0.45s" repeatCount="indefinite"
+          values="M8 5 Q20 -10 5 -30 Q-5 -10 8 5;M8 5 Q22 -15 5 -35 Q-7 -15 8 5;M8 5 Q20 -10 5 -30 Q-5 -10 8 5"/>
+      </path>
+      <path d="M0 0 Q-8 -12 0 -25 Q8 -12 0 0" fill="#ffcc00">
+        <animate attributeName="d" dur="0.35s" repeatCount="indefinite"
+          values="M0 0 Q-8 -12 0 -25 Q8 -12 0 0;M0 0 Q-10 -15 0 -30 Q10 -15 0 0;M0 0 Q-8 -12 0 -25 Q8 -12 0 0"/>
+      </path>
+    </g>
+
+    <!-- Sparks -->
+    <circle cx="-5" cy="-50" r="2" fill="#ffcc00" opacity="0.8">
+      <animate attributeName="cy" values="-50;-80" dur="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="8" cy="-45" r="1.5" fill="#ff6b35" opacity="0.7">
+      <animate attributeName="cy" values="-45;-70" dur="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0" dur="0.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Adventure Motorcycle (Royal Enfield Himalayan style) -->
+  <g transform="translate(140, 430)">
+    <!-- Shadow -->
+    <ellipse cx="60" cy="70" rx="80" ry="15" fill="#000" opacity="0.3"/>
+
+    <!-- Rear wheel -->
+    <circle cx="0" cy="50" r="38" fill="#1a1a2a" stroke="#3a3a4a" stroke-width="6"/>
+    <circle cx="0" cy="50" r="28" fill="#0f0f1a"/>
+    <circle cx="0" cy="50" r="10" fill="#3a3a4a"/>
+    <!-- Spokes -->
+    <g stroke="#4a4a5a" stroke-width="2">
+      <line x1="0" y1="15" x2="0" y2="85"/>
+      <line x1="-35" y1="50" x2="35" y2="50"/>
+      <line x1="-25" y1="25" x2="25" y2="75"/>
+      <line x1="-25" y1="75" x2="25" y2="25"/>
+    </g>
+
+    <!-- Front wheel -->
+    <circle cx="130" cy="50" r="38" fill="#1a1a2a" stroke="#3a3a4a" stroke-width="6"/>
+    <circle cx="130" cy="50" r="28" fill="#0f0f1a"/>
+    <circle cx="130" cy="50" r="10" fill="#3a3a4a"/>
+    <g stroke="#4a4a5a" stroke-width="2">
+      <line x1="130" y1="15" x2="130" y2="85"/>
+      <line x1="95" y1="50" x2="165" y2="50"/>
+      <line x1="105" y1="25" x2="155" y2="75"/>
+      <line x1="105" y1="75" x2="155" y2="25"/>
+    </g>
+
+    <!-- Frame -->
+    <path d="M0 50 L35 15 L90 15 L130 50" stroke="url(#bikeRed)" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M35 15 L65 50 L90 15" stroke="url(#bikeRed)" stroke-width="6" fill="none"/>
+
+    <!-- Engine -->
+    <rect x="40" y="25" width="45" height="35" rx="5" fill="#2a2a3a"/>
+    <rect x="45" y="30" width="12" height="12" fill="#1a1a2a"/>
+    <rect x="62" y="30" width="12" height="12" fill="#1a1a2a"/>
+    <rect x="50" y="48" width="25" height="8" rx="2" fill="#3a3a4a"/>
+
+    <!-- Fuel tank -->
+    <ellipse cx="65" cy="5" rx="28" ry="15" fill="url(#bikeRed)"/>
+    <ellipse cx="65" cy="5" rx="20" ry="9" fill="#ef4444"/>
+    <ellipse cx="65" cy="2" rx="12" ry="5" fill="#fff" opacity="0.2"/>
+
+    <!-- Seat -->
+    <path d="M30 -5 Q65 -20 100 -5 L95 10 L35 10 Z" fill="#1a1a2a"/>
+    <path d="M35 -2 Q65 -15 95 -2" stroke="#2a2a3a" stroke-width="2" fill="none"/>
+
+    <!-- Handlebars -->
+    <rect x="115" y="-20" width="6" height="35" rx="3" fill="#3a3a4a"/>
+    <rect x="100" y="-28" width="35" height="8" rx="4" fill="#2a2a3a"/>
+    <!-- Mirrors -->
+    <ellipse cx="98" cy="-28" rx="8" ry="5" fill="#1a1a2a" stroke="#3a3a4a" stroke-width="1"/>
+    <ellipse cx="137" cy="-28" rx="8" ry="5" fill="#1a1a2a" stroke="#3a3a4a" stroke-width="1"/>
+
+    <!-- Headlight -->
+    <circle cx="140" cy="10" r="12" fill="#ffeaa7" filter="url(#glow)"/>
+    <circle cx="140" cy="10" r="8" fill="#fff"/>
+
+    <!-- Exhaust -->
+    <rect x="-20" y="35" width="35" height="12" rx="6" fill="#5a5a6a"/>
+    <ellipse cx="-20" cy="41" rx="4" ry="6" fill="#4a4a5a"/>
+
+    <!-- Panniers (luggage boxes) -->
+    <rect x="-25" y="-20" width="35" height="50" rx="5" fill="#1e40af"/>
+    <rect x="-22" y="-17" width="29" height="10" fill="#3b82f6"/>
+    <rect x="-22" y="0" width="29" height="3" fill="#60a5fa"/>
+    <rect x="90" y="-20" width="35" height="50" rx="5" fill="#1e40af"/>
+    <rect x="93" y="-17" width="29" height="10" fill="#3b82f6"/>
+    <rect x="93" y="0" width="29" height="3" fill="#60a5fa"/>
+
+    <!-- Top box -->
+    <rect x="30" y="-45" width="70" height="30" rx="5" fill="#1e40af"/>
+    <rect x="33" y="-42" width="64" height="8" fill="#3b82f6"/>
+    <rect x="50" y="-30" width="30" height="3" fill="#60a5fa"/>
+    <!-- Straps -->
+    <line x1="35" y1="-45" x2="35" y2="-15" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="95" y1="-45" x2="95" y2="-15" stroke="#fbbf24" stroke-width="3"/>
+
+    <!-- Crash guards -->
+    <path d="M25 50 Q10 30 30 15" stroke="#5a5a6a" stroke-width="4" fill="none"/>
+    <path d="M105 50 Q120 30 100 15" stroke="#5a5a6a" stroke-width="4" fill="none"/>
+  </g>
+
+  <!-- Rider -->
+  <g transform="translate(200, 365)">
+    <!-- Helmet -->
+    <ellipse cx="0" cy="0" rx="22" ry="25" fill="#1a1a2a"/>
+    <ellipse cx="0" cy="5" rx="20" ry="15" fill="#2a2a3a"/>
+    <!-- Visor -->
+    <path d="M-18 0 Q0 12 18 0" fill="#6366f1" opacity="0.8"/>
+    <path d="M-15 -5 Q0 -15 15 -5" stroke="#3a3a4a" stroke-width="2" fill="none"/>
+
+    <!-- Body/Jacket -->
+    <path d="M-20 30 L-28 80 L28 80 L20 30 Q0 22 -20 30" fill="#1e40af"/>
+    <line x1="0" y1="30" x2="0" y2="75" stroke="#3b82f6" stroke-width="3"/>
+    <!-- Jacket collar -->
+    <path d="M-15 30 Q0 35 15 30" stroke="#60a5fa" stroke-width="2" fill="none"/>
+
+    <!-- Arms on handlebars -->
+    <path d="M-20 40 L-45 60 L-40 75" stroke="#1e40af" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <path d="M20 40 L50 55 L55 70" stroke="#1e40af" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <!-- Gloves -->
+    <circle cx="-40" cy="78" r="8" fill="#1a1a2a"/>
+    <circle cx="57" cy="73" r="8" fill="#1a1a2a"/>
+
+    <!-- Legs -->
+    <path d="M-12 80 L-18 120 L-12 125" stroke="#1a1a2a" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M12 80 L25 115 L30 120" stroke="#1a1a2a" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <!-- Boots -->
+    <ellipse cx="-12" cy="130" rx="12" ry="7" fill="#0f0f1a"/>
+    <ellipse cx="33" cy="123" rx="12" ry="7" fill="#0f0f1a"/>
+  </g>
+
+  <!-- German Shepherd Dog -->
+  <g transform="translate(340, 450)">
+    <!-- Body -->
+    <ellipse cx="0" cy="20" rx="45" ry="25" fill="url(#dogFur)"/>
+    <!-- Back saddle pattern -->
+    <path d="M-35 10 Q0 -5 35 10 Q25 25 0 22 Q-25 25 -35 10" fill="#5a3a2a"/>
+
+    <!-- Head -->
+    <ellipse cx="55" cy="10" rx="25" ry="20" fill="url(#dogFur)"/>
+    <!-- Snout -->
+    <ellipse cx="78" cy="18" rx="18" ry="12" fill="#d4a574"/>
+    <!-- Nose -->
+    <ellipse cx="93" cy="15" rx="6" ry="4" fill="#1a1a2a"/>
+    <!-- Mouth -->
+    <path d="M80 25 Q88 32 80 38" stroke="#ec4899" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+    <!-- Ears -->
+    <path d="M40 0 L30 -35 L55 -8 Z" fill="#5a3a2a"/>
+    <path d="M60 0 L70 -35 L75 0 Z" fill="#5a3a2a"/>
+    <!-- Inner ears -->
+    <path d="M43 -3 L38 -25 L52 -8 Z" fill="#d4a574"/>
+    <path d="M62 -3 L68 -28 L72 -3 Z" fill="#d4a574"/>
+
+    <!-- Eyes -->
+    <ellipse cx="50" cy="5" rx="6" ry="7" fill="#1a1a2a"/>
+    <circle cx="48" cy="3" r="2" fill="#fff"/>
+    <ellipse cx="68" cy="5" rx="6" ry="7" fill="#1a1a2a"/>
+    <circle cx="66" cy="3" r="2" fill="#fff"/>
+
+    <!-- Eyebrows (tan markings) -->
+    <ellipse cx="50" cy="-2" rx="4" ry="2" fill="#d4a574"/>
+    <ellipse cx="68" cy="-2" rx="4" ry="2" fill="#d4a574"/>
+
+    <!-- Front legs -->
+    <rect x="20" y="40" width="14" height="35" rx="7" fill="url(#dogFur)"/>
+    <rect x="40" y="40" width="14" height="35" rx="7" fill="#d4a574"/>
+    <!-- Paws -->
+    <ellipse cx="27" cy="78" rx="10" ry="6" fill="#1a1a2a"/>
+    <ellipse cx="47" cy="78" rx="10" ry="6" fill="#1a1a2a"/>
+
+    <!-- Back legs -->
+    <rect x="-40" y="35" width="16" height="30" rx="8" fill="url(#dogFur)"/>
+    <rect x="-20" y="38" width="14" height="28" rx="7" fill="url(#dogFur)"/>
+    <ellipse cx="-32" cy="68" rx="10" ry="6" fill="#1a1a2a"/>
+    <ellipse cx="-13" cy="68" rx="9" ry="5" fill="#1a1a2a"/>
+
+    <!-- Tail (wagging) -->
+    <path d="M-45 15 Q-70 -15 -55 -40" stroke="#5a3a2a" stroke-width="12" stroke-linecap="round" fill="none">
+      <animate attributeName="d" dur="0.4s" repeatCount="indefinite"
+        values="M-45 15 Q-70 -15 -55 -40;M-45 15 Q-65 -20 -50 -45;M-45 15 Q-70 -15 -55 -40"/>
+    </path>
+
+    <!-- Collar -->
+    <rect x="45" y="25" width="20" height="8" rx="2" fill="#dc2626"/>
+    <circle cx="70" cy="29" r="4" fill="#fbbf24"/>
+
+    <!-- Chest fur -->
+    <ellipse cx="30" cy="35" rx="15" ry="10" fill="#d4a574"/>
+  </g>
+
+  <!-- Small details -->
+  <!-- Rocks -->
+  <ellipse cx="380" cy="520" rx="20" ry="10" fill="#3a3a4a"/>
+  <ellipse cx="400" cy="525" rx="15" ry="8" fill="#2a2a3a"/>
+  <ellipse cx="100" cy="530" rx="18" ry="9" fill="#3a3a4a"/>
+
+  <!-- Grass tufts -->
+  <g stroke="#2a4a3a" stroke-width="2" fill="none">
+    <path d="M50 500 Q55 485 50 470"/>
+    <path d="M55 502 Q60 490 55 478"/>
+    <path d="M520 510 Q525 495 520 480"/>
+    <path d="M525 512 Q530 500 525 488"/>
+  </g>
+</svg>

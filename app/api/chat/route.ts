@@ -1,4 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { promises as fs } from 'fs';
+import path from 'path';
+
+// Cache the knowledge base content
+let knowledgeBaseCache: string | null = null;
+
+async function getKnowledgeBase(): Promise<string> {
+  if (knowledgeBaseCache) {
+    return knowledgeBaseCache;
+  }
+
+  try {
+    const filePath = path.join(process.cwd(), 'app/data/ai-knowledge.md');
+    const content = await fs.readFile(filePath, 'utf-8');
+    knowledgeBaseCache = content;
+    return content;
+  } catch (error) {
+    console.error('Failed to read knowledge base:', error);
+    return '';
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +34,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Load knowledge base
+    const knowledgeBase = await getKnowledgeBase();
+
+    const systemPrompt = `You are a helpful AI assistant for Akhil's portfolio website. You help visitors learn about Akhil's services, experience, and how to get in touch.
+
+Use the following knowledge base to answer questions accurately:
+
+${knowledgeBase}
+
+Guidelines:
+- Be friendly, concise, and helpful
+- Answer based on the knowledge base above
+- If asked something not covered, politely say you don't have that specific information and suggest contacting Akhil directly
+- Keep responses brief but informative (2-3 sentences for simple questions)
+- For pricing questions, explain that it depends on scope and suggest a consultation
+- Always maintain a professional yet approachable tone`;
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -24,16 +62,7 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: 'system',
-            content: `You are a helpful AI assistant for Akhil's portfolio website. You help visitors learn about Akhil's services, experience, and how to get in touch.
-
-Key information about Akhil:
-- Freelance software engineer
-- Experience at Rakuten and AWS
-- Services: MVP development, e-commerce websites, mobile apps, technical consulting
-- Tech stack: React, Next.js, Node.js, Python, PostgreSQL, AWS, Shopify, Stripe
-- Available for freelance projects
-
-Be friendly, concise, and helpful. If asked about pricing, suggest they reach out directly via the contact section. Keep responses brief but informative.`,
+            content: systemPrompt,
           },
           ...messages.map((msg: { role: string; content: string }) => ({
             role: msg.role,

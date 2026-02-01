@@ -56,9 +56,22 @@ export function Contact() {
           {/* Footer */}
           <footer className="pt-16 mt-16 border-t border-theme">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-              <p className="text-sm text-theme-muted">
-                © {new Date().getFullYear()} {siteConfig.name}. Built with Next.js.
-              </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <p className="text-sm text-theme-muted">
+                  © 2025 {siteConfig.name}. Crafted with passion & coffee ☕
+                </p>
+
+                {/* Download Code Button */}
+                <a
+                  href="https://topmate.io/YOUR_USER_ID"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-gradient-to-r from-indigo-600/20 to-purple-600/20 hover:from-indigo-600/30 hover:to-purple-600/30 text-indigo-400 font-medium rounded-lg border border-indigo-500/30 hover:border-indigo-500/50 transition-all"
+                >
+                  <span className="font-mono text-xs">&lt;/&gt;</span>
+                  Download Code
+                </a>
+              </div>
 
               {/* Social Icons */}
               <div className="flex items-center gap-4">

@@ -63,7 +63,7 @@ export const projects = [
     year: '2024',
     description: 'Built and deployed an MVP for an early-stage startup, handling backend APIs, authentication, and deployment.',
     tags: ['Next.js', 'Node.js', 'PostgreSQL'],
-    image: '/projects/project-1.jpg',
+    image: '/projects/project-1.svg',
     github: 'https://github.com/yourusername/project-1',
   },
   {
@@ -71,7 +71,7 @@ export const projects = [
     year: '2024',
     description: 'Integrated Shopify with payment gateways and automated order and fulfillment workflows.',
     tags: ['Shopify', 'Stripe', 'Webhooks'],
-    image: '/projects/project-2.jpg',
+    image: '/projects/project-2.svg',
     github: 'https://github.com/yourusername/project-2',
   },
   // Add more projects here...

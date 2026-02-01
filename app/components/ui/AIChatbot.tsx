@@ -1,33 +1,28 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useChat } from '@/app/context/ChatContext';
 
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
-
-const INITIAL_MESSAGE: Message = {
-  id: '1',
-  role: 'assistant',
+const INITIAL_MESSAGE = {
+  id: 'welcome',
+  role: 'assistant' as const,
   content: "Hi! I'm Akhil's AI assistant. I can help answer questions about his services, experience, and availability. How can I help you today?",
   timestamp: new Date(),
 };
 
 export function AIChatbot() {
+  const { messages: sharedMessages, isTyping, sendMessage } = useChat();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showLabel, setShowLabel] = useState(true);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupDismissed, setPopupDismissed] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMounted = useRef(false);
+
+  // Combine welcome message with shared messages
+  const messages = [INITIAL_MESSAGE, ...sharedMessages];
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -43,7 +38,7 @@ export function AIChatbot() {
     if (isOpen) {
       scrollToBottom();
     }
-  }, [messages, isOpen]);
+  }, [sharedMessages, isOpen]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -51,147 +46,134 @@ export function AIChatbot() {
     }
   }, [isOpen]);
 
-  // Animate on mount and hide label after delay
+  // Show popup after 3 seconds
   useEffect(() => {
-    // Trigger entrance animation
-    const animateTimer = setTimeout(() => {
-      setHasAnimated(true);
-    }, 500);
+    const timer = setTimeout(() => {
+      if (!popupDismissed && !isOpen) {
+        setShowPopup(true);
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [popupDismissed, isOpen]);
 
-    // Hide the label after 5 seconds
-    const labelTimer = setTimeout(() => {
-      setShowLabel(false);
-    }, 5000);
+  // Hide popup after 10 seconds
+  useEffect(() => {
+    if (showPopup) {
+      const timer = setTimeout(() => {
+        setShowPopup(false);
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPopup]);
 
-    return () => {
-      clearTimeout(animateTimer);
-      clearTimeout(labelTimer);
-    };
-  }, []);
+  const handleOpenChat = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen(true);
+    setShowPopup(false);
+    setPopupDismissed(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: input.trim(),
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+    const userInput = input.trim();
     setInput('');
-    setIsTyping(true);
     setError(null);
 
     try {
-      const apiMessages = messages
-        .filter(m => m.id !== '1')
-        .concat(userMessage)
-        .map(m => ({ role: m.role, content: m.content }));
-
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to get response');
-      }
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: data.message,
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (err) {
-      console.error('Chat error:', err);
+      await sendMessage(userInput);
+    } catch {
       setError('Failed to get response. Please try again.');
-
-      const fallbackMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: "I'm having trouble connecting right now. Please try again, or feel free to reach out directly via the contact section below!",
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, fallbackMessage]);
-    } finally {
-      setIsTyping(false);
     }
   };
 
   return (
     <>
-      {/* Chat Button - Prominent and always visible */}
+      {/* Chat Button - Fixed bottom right */}
       <div
-        className={`fixed z-50 bottom-6 right-6 transition-all duration-500 ${
+        className={`fixed z-50 right-4 md:right-6 bottom-4 md:bottom-6 transition-all duration-300 ${
           isOpen ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'
-        } ${hasAnimated ? '' : 'translate-y-20 opacity-0'}`}
+        }`}
       >
-        {/* Attention-grabbing glow */}
+        {/* Glow effect */}
         <div className="absolute -inset-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full opacity-60 blur-xl animate-pulse" />
 
         {/* Pulsing ring */}
         <div
-          className="absolute inset-0 rounded-full bg-indigo-500/50"
+          className="absolute -inset-1 rounded-full border-2 border-indigo-400/50"
           style={{
-            animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite',
+            animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
           }}
         />
 
         {/* Main button */}
         <button
-          onClick={() => setIsOpen(true)}
-          className="relative p-5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
+          onClick={handleOpenChat}
+          className="relative p-4 md:p-5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
           style={{
-            boxShadow: '0 10px 50px -5px rgba(99, 102, 241, 0.7), 0 4px 25px -5px rgba(147, 51, 234, 0.5)',
+            boxShadow: '0 10px 40px -5px rgba(99, 102, 241, 0.7), 0 4px 20px -5px rgba(147, 51, 234, 0.5)',
           }}
           aria-label="Open AI chat"
         >
           <div className="relative">
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
             {/* Online indicator */}
-            <span className="absolute -top-1 -right-1 flex h-4 w-4">
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-white"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2 border-white"></span>
             </span>
+            {/* Message count badge */}
+            {sharedMessages.length > 0 && (
+              <span className="absolute -top-2 -left-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                {sharedMessages.length}
+              </span>
+            )}
           </div>
         </button>
 
-        {/* Floating label - shows on load */}
+        {/* Auto popup message - appears above button */}
         <div
-          className={`absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-500 ${
-            showLabel && !isOpen
-              ? 'opacity-100 translate-x-0'
-              : 'opacity-0 translate-x-4 pointer-events-none'
+          className={`absolute bottom-full mb-3 right-0 whitespace-nowrap transition-all duration-500 ${
+            showPopup && !isOpen
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
           }`}
         >
-          <div className="px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl shadow-xl">
-            <span className="flex items-center gap-2">
-              <span className="text-lg">👋</span>
-              Chat with AI Assistant
-            </span>
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-3 h-3 bg-purple-600 rotate-45"></div>
+          <div
+            className="px-4 py-3 bg-theme border border-theme rounded-xl shadow-2xl"
+            style={{
+              boxShadow: '0 10px 40px -5px rgba(0, 0, 0, 0.3)',
+            }}
+          >
+            <div className="flex items-start gap-2">
+              <span className="text-xl flex-shrink-0">👋</span>
+              <div>
+                <p className="font-medium text-theme text-sm">
+                  {sharedMessages.length > 0 ? 'Continue chatting?' : 'Need help?'}
+                </p>
+                <p className="text-xs text-theme-muted mt-1">
+                  {sharedMessages.length > 0 ? `${sharedMessages.length} messages` : 'Chat with AI assistant'}
+                </p>
+              </div>
+            </div>
+            {/* Arrow pointing down */}
+            <div className="absolute bottom-0 right-6 translate-y-1.5 w-3 h-3 bg-theme border-r border-b border-theme rotate-45"></div>
           </div>
         </div>
       </div>
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-3rem)] bg-theme border border-theme rounded-2xl shadow-2xl transition-all duration-300 overflow-hidden ${
+        className={`fixed z-50 bottom-4 right-4 md:bottom-6 md:right-6 w-[calc(100vw-2rem)] md:w-[400px] max-w-[400px] bg-theme border border-theme rounded-2xl shadow-2xl transition-all duration-300 overflow-hidden ${
           isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
         }`}
         style={{
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          maxHeight: 'calc(100vh - 120px)',
         }}
       >
         {/* Header */}
@@ -222,14 +204,14 @@ export function AIChatbot() {
         </div>
 
         {/* Messages */}
-        <div ref={chatContainerRef} className="h-[350px] overflow-y-auto p-4 space-y-4">
+        <div ref={chatContainerRef} className="h-[300px] md:h-[350px] overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                className={`max-w-[85%] rounded-2xl px-4 py-2 ${
                   message.role === 'user'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-md'
                     : 'bg-theme-card border border-theme text-theme rounded-bl-md'
@@ -257,8 +239,6 @@ export function AIChatbot() {
               <p className="text-xs text-red-400">{error}</p>
             </div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}

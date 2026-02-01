@@ -1,0 +1,253 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="50%" style="stop-color:#1a0a2e"/>
+      <stop offset="100%" style="stop-color:#0f0a1f"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899"/>
+      <stop offset="100%" style="stop-color:#f43f5e"/>
+    </linearGradient>
+    <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f1f3a"/>
+      <stop offset="100%" style="stop-color:#151528"/>
+    </linearGradient>
+    <linearGradient id="stripeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#635bff"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="shopifyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#96bf48"/>
+      <stop offset="100%" style="stop-color:#5e8e3e"/>
+    </linearGradient>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bgGrad2)"/>
+
+  <!-- Animated gradient orbs -->
+  <circle cx="150" cy="150" r="200" fill="url(#purpleGrad)" opacity="0.1" filter="url(#glow2)">
+    <animate attributeName="cx" values="150;180;150" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="650" cy="450" r="220" fill="url(#pinkGrad)" opacity="0.08" filter="url(#glow2)">
+    <animate attributeName="cy" values="450;420;450" dur="6s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Connection Lines -->
+  <g opacity="0.3">
+    <path d="M200 200 Q400 150 600 200" stroke="url(#purpleGrad)" stroke-width="2" fill="none" stroke-dasharray="8,8">
+      <animate attributeName="stroke-dashoffset" values="0;16" dur="1s" repeatCount="indefinite"/>
+    </path>
+    <path d="M200 400 Q400 450 600 400" stroke="url(#pinkGrad)" stroke-width="2" fill="none" stroke-dasharray="8,8">
+      <animate attributeName="stroke-dashoffset" values="0;16" dur="1s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- Shopify Store Card -->
+  <g filter="url(#shadow2)" transform="translate(50, 100)">
+    <rect width="220" height="320" rx="16" fill="url(#cardGrad2)" stroke="#ffffff" stroke-width="1" stroke-opacity="0.1"/>
+
+    <!-- Shopify Header -->
+    <rect width="220" height="50" rx="16" fill="url(#shopifyGrad)"/>
+    <rect y="35" width="220" height="15" fill="url(#shopifyGrad)"/>
+    <text x="60" y="33" font-family="system-ui" font-size="14" fill="#fff" font-weight="bold">Shopify Store</text>
+
+    <!-- Product Cards -->
+    <g transform="translate(15, 65)">
+      <rect width="85" height="100" rx="8" fill="#252540"/>
+      <rect x="5" y="5" width="75" height="55" rx="4" fill="#3a3a5c"/>
+      <rect x="5" y="68" width="50" height="8" rx="2" fill="#fff" opacity="0.8"/>
+      <rect x="5" y="82" width="30" height="10" rx="2" fill="#96bf48"/>
+    </g>
+
+    <g transform="translate(115, 65)">
+      <rect width="85" height="100" rx="8" fill="#252540"/>
+      <rect x="5" y="5" width="75" height="55" rx="4" fill="#3a3a5c"/>
+      <rect x="5" y="68" width="50" height="8" rx="2" fill="#fff" opacity="0.8"/>
+      <rect x="5" y="82" width="30" height="10" rx="2" fill="#96bf48"/>
+    </g>
+
+    <!-- Order Stats -->
+    <g transform="translate(15, 180)">
+      <rect width="190" height="60" rx="8" fill="#1a1a30"/>
+      <text x="15" y="25" font-family="system-ui" font-size="11" fill="#6b7280">Today's Orders</text>
+      <text x="15" y="48" font-family="system-ui" font-size="22" fill="#fff" font-weight="bold">47</text>
+      <text x="60" y="48" font-family="system-ui" font-size="11" fill="#10b981">+23%</text>
+      <rect x="120" y="15" width="50" height="35" rx="4" fill="#96bf48" opacity="0.2"/>
+      <text x="130" y="38" font-family="system-ui" font-size="18" fill="#96bf48">↑</text>
+    </g>
+
+    <!-- Inventory Alert -->
+    <g transform="translate(15, 255)">
+      <rect width="190" height="45" rx="8" fill="#1a1a30" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.5"/>
+      <circle cx="20" cy="22" r="6" fill="#f59e0b"/>
+      <text x="35" y="20" font-family="system-ui" font-size="10" fill="#f59e0b">Low Stock Alert</text>
+      <text x="35" y="35" font-family="system-ui" font-size="11" fill="#9ca3af">3 items need restock</text>
+    </g>
+  </g>
+
+  <!-- Automation Hub (Center) -->
+  <g filter="url(#shadow2)" transform="translate(290, 150)">
+    <rect width="220" height="280" rx="16" fill="url(#cardGrad2)" stroke="url(#purpleGrad)" stroke-width="2"/>
+
+    <!-- Header -->
+    <rect width="220" height="50" rx="16" fill="url(#purpleGrad)" opacity="0.3"/>
+    <rect y="35" width="220" height="15" fill="url(#purpleGrad)" opacity="0.3"/>
+    <text x="45" y="33" font-family="system-ui" font-size="14" fill="#fff" font-weight="bold">Automation Hub</text>
+
+    <!-- Workflow Steps -->
+    <g transform="translate(20, 70)">
+      <!-- Step 1 -->
+      <rect width="180" height="45" rx="8" fill="#252540"/>
+      <circle cx="20" cy="22" r="12" fill="url(#shopifyGrad)"/>
+      <text x="20" y="27" font-family="system-ui" font-size="10" fill="#fff" text-anchor="middle">1</text>
+      <text x="42" y="20" font-family="system-ui" font-size="11" fill="#fff">New Order Received</text>
+      <text x="42" y="35" font-family="system-ui" font-size="9" fill="#6b7280">Webhook triggered</text>
+
+      <!-- Connecting line -->
+      <line x1="20" y1="45" x2="20" y2="55" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4"/>
+
+      <!-- Step 2 -->
+      <g transform="translate(0, 55)">
+        <rect width="180" height="45" rx="8" fill="#252540"/>
+        <circle cx="20" cy="22" r="12" fill="url(#stripeGrad)"/>
+        <text x="20" y="27" font-family="system-ui" font-size="10" fill="#fff" text-anchor="middle">2</text>
+        <text x="42" y="20" font-family="system-ui" font-size="11" fill="#fff">Payment Verified</text>
+        <text x="42" y="35" font-family="system-ui" font-size="9" fill="#6b7280">Stripe confirmation</text>
+      </g>
+
+      <line x1="20" y1="100" x2="20" y2="110" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4"/>
+
+      <!-- Step 3 -->
+      <g transform="translate(0, 110)">
+        <rect width="180" height="45" rx="8" fill="#252540"/>
+        <circle cx="20" cy="22" r="12" fill="#3b82f6"/>
+        <text x="20" y="27" font-family="system-ui" font-size="10" fill="#fff" text-anchor="middle">3</text>
+        <text x="42" y="20" font-family="system-ui" font-size="11" fill="#fff">Fulfillment Started</text>
+        <text x="42" y="35" font-family="system-ui" font-size="9" fill="#6b7280">Auto-processing</text>
+      </g>
+
+      <line x1="20" y1="155" x2="20" y2="165" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4"/>
+
+      <!-- Step 4 -->
+      <g transform="translate(0, 165)">
+        <rect width="180" height="45" rx="8" fill="#252540" stroke="#10b981" stroke-width="1"/>
+        <circle cx="20" cy="22" r="12" fill="#10b981"/>
+        <text x="20" y="27" font-family="system-ui" font-size="10" fill="#fff" text-anchor="middle">✓</text>
+        <text x="42" y="20" font-family="system-ui" font-size="11" fill="#10b981">Complete</text>
+        <text x="42" y="35" font-family="system-ui" font-size="9" fill="#6b7280">Customer notified</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Stripe Dashboard Card -->
+  <g filter="url(#shadow2)" transform="translate(530, 100)">
+    <rect width="220" height="320" rx="16" fill="url(#cardGrad2)" stroke="#ffffff" stroke-width="1" stroke-opacity="0.1"/>
+
+    <!-- Stripe Header -->
+    <rect width="220" height="50" rx="16" fill="url(#stripeGrad)"/>
+    <rect y="35" width="220" height="15" fill="url(#stripeGrad)"/>
+    <text x="55" y="33" font-family="system-ui" font-size="14" fill="#fff" font-weight="bold">Stripe Payments</text>
+
+    <!-- Revenue Card -->
+    <g transform="translate(15, 65)">
+      <rect width="190" height="80" rx="8" fill="#1a1a30"/>
+      <text x="15" y="25" font-family="system-ui" font-size="11" fill="#6b7280">Monthly Revenue</text>
+      <text x="15" y="55" font-family="system-ui" font-size="28" fill="#fff" font-weight="bold">$24,892</text>
+      <text x="15" y="72" font-family="system-ui" font-size="11" fill="#10b981">↑ 18.2% from last month</text>
+    </g>
+
+    <!-- Transaction List -->
+    <g transform="translate(15, 160)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" fill="#9ca3af">Recent Transactions</text>
+
+      <g transform="translate(0, 15)">
+        <rect width="190" height="35" rx="6" fill="#252540"/>
+        <circle cx="18" cy="17" r="10" fill="#10b981" opacity="0.2"/>
+        <text x="18" y="21" font-family="system-ui" font-size="10" fill="#10b981" text-anchor="middle">✓</text>
+        <text x="38" y="14" font-family="system-ui" font-size="10" fill="#fff">Order #1847</text>
+        <text x="38" y="27" font-family="system-ui" font-size="9" fill="#6b7280">2 min ago</text>
+        <text x="155" y="20" font-family="system-ui" font-size="11" fill="#10b981">+$149</text>
+      </g>
+
+      <g transform="translate(0, 55)">
+        <rect width="190" height="35" rx="6" fill="#252540"/>
+        <circle cx="18" cy="17" r="10" fill="#10b981" opacity="0.2"/>
+        <text x="18" y="21" font-family="system-ui" font-size="10" fill="#10b981" text-anchor="middle">✓</text>
+        <text x="38" y="14" font-family="system-ui" font-size="10" fill="#fff">Order #1846</text>
+        <text x="38" y="27" font-family="system-ui" font-size="9" fill="#6b7280">15 min ago</text>
+        <text x="155" y="20" font-family="system-ui" font-size="11" fill="#10b981">+$89</text>
+      </g>
+
+      <g transform="translate(0, 95)">
+        <rect width="190" height="35" rx="6" fill="#252540"/>
+        <circle cx="18" cy="17" r="10" fill="#10b981" opacity="0.2"/>
+        <text x="18" y="21" font-family="system-ui" font-size="10" fill="#10b981" text-anchor="middle">✓</text>
+        <text x="38" y="14" font-family="system-ui" font-size="10" fill="#fff">Order #1845</text>
+        <text x="38" y="27" font-family="system-ui" font-size="9" fill="#6b7280">1 hour ago</text>
+        <text x="155" y="20" font-family="system-ui" font-size="11" fill="#10b981">+$312</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connection Arrows -->
+  <g opacity="0.6">
+    <!-- Shopify to Hub -->
+    <path d="M270 260 L290 260" stroke="url(#shopifyGrad)" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    <!-- Hub to Stripe -->
+    <path d="M510 290 L530 290" stroke="url(#stripeGrad)" stroke-width="3"/>
+  </g>
+
+  <!-- Bottom Stats Bar -->
+  <g transform="translate(50, 450)">
+    <rect width="700" height="100" rx="12" fill="url(#cardGrad2)" stroke="#ffffff" stroke-width="1" stroke-opacity="0.05" filter="url(#shadow2)"/>
+
+    <g transform="translate(30, 25)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#6b7280">Orders Processed</text>
+      <text x="0" y="30" font-family="system-ui" font-size="24" fill="#fff" font-weight="bold">12,847</text>
+      <text x="0" y="50" font-family="system-ui" font-size="10" fill="#10b981">This month</text>
+    </g>
+
+    <g transform="translate(180, 25)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#6b7280">Automation Rate</text>
+      <text x="0" y="30" font-family="system-ui" font-size="24" fill="#fff" font-weight="bold">94.2%</text>
+      <text x="0" y="50" font-family="system-ui" font-size="10" fill="#8b5cf6">Fully automated</text>
+    </g>
+
+    <g transform="translate(330, 25)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#6b7280">Avg. Processing</text>
+      <text x="0" y="30" font-family="system-ui" font-size="24" fill="#fff" font-weight="bold">1.2s</text>
+      <text x="0" y="50" font-family="system-ui" font-size="10" fill="#3b82f6">Per order</text>
+    </g>
+
+    <g transform="translate(480, 25)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#6b7280">Customer Satisfaction</text>
+      <text x="0" y="30" font-family="system-ui" font-size="24" fill="#fff" font-weight="bold">4.9★</text>
+      <text x="0" y="50" font-family="system-ui" font-size="10" fill="#fbbf24">Based on 2.4k reviews</text>
+    </g>
+
+    <!-- Status indicator -->
+    <g transform="translate(620, 35)">
+      <rect width="60" height="30" rx="15" fill="#10b981" opacity="0.2"/>
+      <circle cx="18" cy="15" r="5" fill="#10b981">
+        <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="30" y="20" font-family="system-ui" font-size="11" fill="#10b981">Live</text>
+    </g>
+  </g>
+</svg>

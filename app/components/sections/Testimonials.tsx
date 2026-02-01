@@ -1,12 +1,81 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { testimonials } from '@/app/data/content';
 import { ScrollReveal } from '@/app/components/ui/ScrollReveal';
 import { SectionHeading } from '@/app/components/ui/SectionHeading';
 
+// Generate a simple math problem for verification
+function generateMathProblem() {
+  const a = Math.floor(Math.random() * 10) + 1;
+  const b = Math.floor(Math.random() * 10) + 1;
+  return { question: `${a} + ${b}`, answer: a + b };
+}
+
 export function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    role: '',
+    company: '',
+    content: '',
+    mathAnswer: '',
+    honeypot: '', // Hidden field for bots
+  });
+
+  // Generate math problem once
+  const mathProblem = useMemo(() => generateMathProblem(), [showForm]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/testimonial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          expectedAnswer: mathProblem.answer,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit');
+      }
+
+      setSubmitStatus('success');
+      setFormData({
+        name: '',
+        role: '',
+        company: '',
+        content: '',
+        mathAnswer: '',
+        honeypot: '',
+      });
+
+      // Hide form after success
+      setTimeout(() => {
+        setShowForm(false);
+        setSubmitStatus('idle');
+      }, 3000);
+    } catch (err) {
+      setSubmitStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <ScrollReveal>
@@ -92,6 +161,142 @@ export function Testimonials() {
             </div>
           ))}
         </div>
+
+        {/* Add testimonial button */}
+        <div className="mt-10 text-center">
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-indigo-400 hover:text-indigo-300 border border-indigo-500/30 hover:border-indigo-500/50 rounded-xl transition-all duration-300 hover:bg-indigo-500/10"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            {showForm ? 'Cancel' : 'Share Your Experience'}
+          </button>
+        </div>
+
+        {/* Testimonial submission form */}
+        {showForm && (
+          <div className="mt-8 bg-theme-card border border-theme rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
+            <h3 className="text-lg font-display font-semibold text-theme mb-6">
+              Share Your Testimonial
+            </h3>
+
+            {submitStatus === 'success' ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="text-theme font-medium">Thank you!</p>
+                <p className="text-theme-muted text-sm mt-1">Your testimonial has been submitted for review.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot field - hidden from users, bots will fill it */}
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.honeypot}
+                  onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-theme-muted mb-2">
+                      Your Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-theme border border-theme text-theme placeholder:text-theme-muted focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-theme-muted mb-2">
+                      Company
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl bg-theme border border-theme text-theme placeholder:text-theme-muted focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                      placeholder="Acme Inc"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-theme-muted mb-2">
+                    Your Role
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.role}
+                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-theme border border-theme text-theme placeholder:text-theme-muted focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                    placeholder="CEO, Developer, Designer..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-theme-muted mb-2">
+                    Your Testimonial *
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={formData.content}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-theme border border-theme text-theme placeholder:text-theme-muted focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none"
+                    placeholder="Share your experience working together..."
+                  />
+                </div>
+
+                {/* Human verification */}
+                <div className="bg-theme rounded-xl p-4 border border-theme">
+                  <label className="block text-sm font-medium text-theme mb-2">
+                    Quick verification: What is {mathProblem.question}? *
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={formData.mathAnswer}
+                    onChange={(e) => setFormData({ ...formData, mathAnswer: e.target.value })}
+                    className="w-24 px-4 py-2 rounded-lg bg-theme-card border border-theme text-theme text-center focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                    placeholder="?"
+                  />
+                </div>
+
+                {submitStatus === 'error' && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+                    {errorMessage}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between pt-4">
+                  <p className="text-xs text-theme-muted">
+                    Testimonials are reviewed before publishing
+                  </p>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 text-white font-medium rounded-xl transition-all duration-300"
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Submit Testimonial'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
       </section>
     </ScrollReveal>
   );

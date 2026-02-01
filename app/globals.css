@@ -62,6 +62,10 @@
     font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   }
 
+  .font-mono {
+    font-family: var(--font-mono), ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  }
+
   /* Theme utility classes */
   .bg-theme {
     background-color: var(--color-bg);
@@ -198,6 +202,25 @@
   100% { transform: scale(1.5); opacity: 0; }
 }
 
+/* Letter bounce animation for hero text */
+@keyframes letter-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-12px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
+  70% {
+    transform: translateY(-4px) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
 @layer utilities {
   .animate-wave {
     animation: wave 1s ease-in-out;
@@ -227,6 +250,10 @@
 
   .animate-pulse-ring {
     animation: pulse-ring 2s ease-out infinite;
+  }
+
+  .animate-letter-bounce {
+    animation: letter-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .duration-400 {

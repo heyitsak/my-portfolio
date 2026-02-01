@@ -9,7 +9,7 @@ export function Work() {
   return (
     <ScrollReveal>
       <section id="work" className="mb-40 scroll-mt-24">
-        <SectionHeading>Work</SectionHeading>
+        <SectionHeading>Building & Learning</SectionHeading>
 
         <StaggerContainer className="space-y-24 lg:space-y-32" staggerDelay={200}>
           {projects.map((project, index) => (
@@ -45,11 +45,12 @@ interface ProjectRowProps {
   year: string;
   description: string;
   tags: string[];
+  image?: string;
   index: number;
   isReversed: boolean;
 }
 
-function ProjectRow({ title, year, description, tags, index, isReversed }: ProjectRowProps) {
+function ProjectRow({ title, year, description, tags, image, index, isReversed }: ProjectRowProps) {
   return (
     <div className={`group flex flex-col ${isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 lg:gap-16 items-center`}>
       {/* Content Side */}
@@ -107,15 +108,27 @@ function ProjectRow({ title, year, description, tags, index, isReversed }: Proje
       {/* Image Side */}
       <div className="flex-1 w-full">
         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border border-white/10 group-hover:border-indigo-500/30 transition-colors duration-500">
-          {/* Placeholder gradient - replace with actual project images */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent" />
-
-          {/* Project number watermark */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display text-[120px] md:text-[160px] font-bold text-white/[0.03] select-none">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-          </div>
+          {/* Project Image */}
+          {image ? (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-contain p-2"
+              unoptimized
+            />
+          ) : (
+            <>
+              {/* Placeholder gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent" />
+              {/* Project number watermark */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="font-display text-[120px] md:text-[160px] font-bold text-white/[0.03] select-none">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </div>
+            </>
+          )}
 
           {/* Hover overlay */}
           <div className="absolute inset-0 bg-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

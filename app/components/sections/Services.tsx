@@ -35,7 +35,7 @@ export function Services() {
   return (
     <ScrollReveal>
       <section id="services" className="mb-40 scroll-mt-24">
-        <SectionHeading>What I do</SectionHeading>
+        <SectionHeading>How I Can Help</SectionHeading>
 
         {/* Circular/Orbital layout */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12" staggerDelay={100}>

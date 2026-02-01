@@ -31,7 +31,7 @@ export function Blog({ posts }: BlogProps) {
   return (
     <ScrollReveal>
       <section id="blog" className="mb-40 scroll-mt-24">
-        <SectionHeading>Blog</SectionHeading>
+        <SectionHeading>Tech Blog</SectionHeading>
 
         {/* Category tabs */}
         <div className="flex flex-wrap gap-2 mb-10">

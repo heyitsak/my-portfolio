@@ -39,7 +39,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen text-theme relative">
-      <article className="max-w-3xl mx-auto px-6 md:px-12 py-20 md:py-32">
+      <article className="w-full max-w-3xl lg:max-w-4xl xl:max-w-[900px] mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-32">
         {/* Back link */}
         <Link
           href="/blog"

@@ -12,7 +12,7 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen text-theme relative">
-      <div className="max-w-3xl lg:max-w-4xl mx-auto px-6 md:px-12 py-20 md:py-32">
+      <div className="w-full max-w-5xl lg:max-w-6xl xl:max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-32">
         {/* Back link */}
         <Link
           href="/"

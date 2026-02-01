@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { siteConfig } from '@/app/data/content';
+import { ChatProvider } from '@/app/context/ChatContext';
+import { VisitorTracker } from './VisitorTracker';
 
 export function PageLoader({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,14 +56,17 @@ export function PageLoader({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Page Content */}
-      <div
-        className={`transition-all duration-700 ease-out ${
-          isLoading ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-        }`}
-        style={{ transitionDelay: isLoading ? '0ms' : '200ms' }}
-      >
-        {children}
-      </div>
+      <ChatProvider>
+        <VisitorTracker />
+        <div
+          className={`transition-all duration-700 ease-out ${
+            isLoading ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+          }`}
+          style={{ transitionDelay: isLoading ? '0ms' : '200ms' }}
+        >
+          {children}
+        </div>
+      </ChatProvider>
     </>
   );
 }
