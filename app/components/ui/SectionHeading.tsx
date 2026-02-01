@@ -3,19 +3,16 @@ interface SectionHeadingProps {
   gradient?: boolean;
 }
 
-export function SectionHeading({ children, gradient = false }: SectionHeadingProps) {
+export function SectionHeading({ children }: SectionHeadingProps) {
   return (
-    <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold mb-12 relative inline-block group cursor-default">
-      <span
-        className={
-          gradient
-            ? 'text-gradient inline-block transition-all duration-300'
-            : 'text-theme'
-        }
-      >
-        {children}
-      </span>
-      <span className="absolute -bottom-3 left-0 w-12 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full group-hover:w-20 transition-all duration-300" />
-    </h2>
+    <div className="w-full flex justify-center mb-12">
+      <h2 className="relative inline-block group cursor-default">
+        <span className="text-2xl md:text-3xl lg:text-4xl font-bold font-display bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 bg-clip-text text-transparent transition-all duration-300 group-hover:from-yellow-400 group-hover:via-rose-500 group-hover:to-violet-600">
+          {children}
+        </span>
+        {/* Decorative underline */}
+        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent rounded-full group-hover:w-24 transition-all duration-300" />
+      </h2>
+    </div>
   );
 }

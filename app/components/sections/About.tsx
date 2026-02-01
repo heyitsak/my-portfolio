@@ -8,7 +8,7 @@ export function About() {
   return (
     <ScrollReveal>
       <section id="about" className="mb-40 scroll-mt-24">
-        <SectionHeading>About</SectionHeading>
+        <SectionHeading>About Me</SectionHeading>
         <div className="space-y-5 text-base md:text-lg text-theme-secondary leading-relaxed">
           {aboutContent.paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>

@@ -1,35 +1,183 @@
 ---
 title: "Building MVPs That Actually Ship"
 excerpt: "Lessons learned from launching multiple products on tight timelines. Focus, simplicity, and knowing when to cut scope."
-category: "Startups"
+category: "Development"
 date: "Jan 15, 2024"
-readTime: "6 min read"
+readTime: "8 min read"
 featured: false
+published: true
 ---
 
-After helping launch dozens of MVPs, I've learned that the hardest part isn't building—it's deciding what NOT to build.
+After helping launch dozens of MVPs, I've learned that the hardest part isn't building—it's deciding what NOT to build. Here's my framework for shipping products that validate ideas without endless development cycles.
 
 ## The MVP Trap
 
-Most founders want their "minimum" viable product to have every feature. This is a recipe for never shipping.
+Most founders want their "minimum" viable product to have every feature they've imagined. This is a recipe for never shipping. The result?
+
+- **Scope creep** - "Just one more feature" syndrome
+- **Delayed validation** - Months of building before any user feedback
+- **Burned resources** - Time and money spent on assumptions
+- **Team fatigue** - Losing momentum before launch
 
 ## The One-Feature Rule
 
-The best MVPs solve ONE problem exceptionally well:
+The best MVPs solve ONE problem exceptionally well. Look at these billion-dollar companies:
 
-- Dropbox started as just file syncing
-- Twitter was just 140-character updates
-- Stripe was just a simple payment API
+| Company | MVP Focus | What They Didn't Have |
+|---------|-----------|----------------------|
+| Dropbox | File syncing | Mobile apps, team features, integrations |
+| Twitter | 140-char updates | Retweets, threads, spaces, analytics |
+| Stripe | Simple payment API | Invoicing, subscriptions, fraud detection |
+| Airbnb | List/book rooms | Reviews, experiences, photos |
+
+They all launched with a single core value proposition and expanded from there.
 
 ## My MVP Framework
 
-1. **Define the core loop:** What's the one action users must take?
-2. **Remove everything else:** If it doesn't serve the core loop, cut it
-3. **Set a ship date:** Work backwards from a fixed deadline
-4. **Launch ugly:** A shipped product beats a perfect mockup
+### 1. Define the Core Loop
 
-## Real Example
+Ask yourself: **What's the one action users must take for this to work?**
 
-I helped a client launch an e-commerce MVP in 3 weeks by cutting user accounts, search, reviews, and wishlists. They validated their market in 3 weeks instead of 3 months.
+```
+For a marketplace: Buyer finds and purchases from seller
+For a social app: User creates and shares content
+For a SaaS tool: User solves their specific problem
+```
+
+Everything else is secondary.
+
+### 2. The "Must-Have" Test
+
+For every feature, ask:
+
+> "Would users pay for this product WITHOUT this feature?"
+
+If yes, cut it. You can add it later based on real feedback.
+
+### 3. Set a Ship Date First
+
+Pick a date 2-4 weeks out. Work backwards:
+
+```
+Week 1: Core functionality
+Week 2: Basic UI/UX
+Week 3: Testing & fixes
+Week 4: Launch prep
+```
+
+This forces ruthless prioritization.
+
+### 4. Launch Ugly
+
+A shipped product beats a perfect mockup. Always.
+
+> "If you're not embarrassed by the first version of your product, you've launched too late." — Reid Hoffman
+
+## Real Example: E-commerce MVP
+
+A client came to me wanting to launch a niche e-commerce platform. Their initial scope:
+
+**Original Feature List:**
+- User accounts & profiles
+- Product catalog with filters
+- Shopping cart
+- Checkout with multiple payment options
+- Order tracking
+- Reviews & ratings
+- Wishlist
+- Search with autocomplete
+- Admin dashboard
+- Email notifications
+- Mobile-responsive design
+
+**Timeline:** 3 months
+
+### What We Actually Built
+
+**MVP Feature List:**
+- Product catalog (static, no filters)
+- Checkout (Stripe only)
+- Email confirmation
+- Mobile-responsive design
+
+**Timeline:** 3 weeks
+
+### The Result
+
+They validated their market in 3 weeks instead of 3 months. Key learnings:
+
+1. Users didn't care about accounts—guest checkout was fine
+2. Search wasn't needed with <50 products
+3. Reviews could wait until they had repeat customers
+4. Wishlists were a "nice to have" that no one requested
+
+## Technical Decisions for Speed
+
+### Use What You Know
+
+Don't learn a new framework for your MVP. Ship with your strongest stack.
+
+```javascript
+// Good: Use your familiar tools
+const stack = {
+  frontend: 'React', // If you know it
+  backend: 'Node.js', // If you know it
+  database: 'PostgreSQL', // If you know it
+  hosting: 'Vercel', // Simple deployment
+};
+
+// Bad: Learning curve = delays
+const newStack = {
+  frontend: 'Svelte', // Never used it
+  backend: 'Rust', // Wanted to try
+  database: 'CockroachDB', // Heard it's cool
+};
+```
+
+### Leverage Third-Party Services
+
+Build vs. buy decisions should favor buying for MVPs:
+
+| Feature | Build Time | Alternative |
+|---------|-----------|-------------|
+| Authentication | 2-3 days | Auth0, Clerk, NextAuth |
+| Payments | 1 week | Stripe, Lemonsqueezy |
+| Email | 2-3 days | Resend, SendGrid |
+| File uploads | 2-3 days | Uploadthing, Cloudinary |
+| Analytics | 1-2 days | PostHog, Plausible |
+
+### Skip the Admin Panel
+
+For the first version, manage data directly in the database or use a service like Airtable. Build an admin panel only after you're sure you need one.
+
+## When to Add Features
+
+Only add features when you have:
+
+1. **Consistent user requests** - Multiple users asking for the same thing
+2. **Data showing need** - Analytics proving a gap in the experience
+3. **Revenue potential** - The feature directly impacts conversion or retention
+
+## The Launch Checklist
+
+Before shipping, ensure you have:
+
+```markdown
+- [ ] Core value proposition works
+- [ ] User can complete the main action
+- [ ] Payment processing (if applicable)
+- [ ] Basic error handling
+- [ ] Works on mobile
+- [ ] Analytics installed
+- [ ] Feedback mechanism (even just an email)
+```
+
+That's it. Everything else is iteration.
+
+## Conclusion
+
+The goal of an MVP isn't to build a product—it's to learn whether you should build a product. Optimize for speed to learning, not feature completeness.
+
+Remember: **Shipping is a feature.**
 
 Ready to ship your MVP? [Let's talk](/#contact).

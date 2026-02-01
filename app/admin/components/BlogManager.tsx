@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface BlogPost {
   slug: string;
@@ -20,6 +22,8 @@ export function BlogManager() {
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     fetchPosts();
@@ -49,11 +53,39 @@ export function BlogManager() {
       content: '',
     });
     setIsEditing(true);
+    setShowPreview(false);
   };
 
   const handleEdit = (post: BlogPost) => {
     setCurrentPost({ ...post });
     setIsEditing(true);
+    setShowPreview(false);
+  };
+
+  const insertMarkdown = (before: string, after: string = '', placeholder: string = '') => {
+    const textarea = textareaRef.current;
+    if (!textarea || !currentPost) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const textToInsert = selectedText || placeholder;
+
+    const newContent =
+      textarea.value.substring(0, start) +
+      before +
+      textToInsert +
+      after +
+      textarea.value.substring(end);
+
+    setCurrentPost({ ...currentPost, content: newContent });
+
+    // Set cursor position after the inserted text
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + before.length + textToInsert.length + after.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
   };
 
   const handleSave = async () => {
@@ -217,18 +249,153 @@ export function BlogManager() {
                 {currentPost.published ? 'Published' : 'Draft'}
               </span>
             </div>
+
+            {/* Markdown Help */}
+            <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+              <h4 className="text-sm font-medium text-white mb-2">Markdown Tips</h4>
+              <ul className="text-xs text-gray-400 space-y-1">
+                <li><code className="bg-white/10 px-1 rounded">## Heading</code> - Section heading</li>
+                <li><code className="bg-white/10 px-1 rounded">**bold**</code> - Bold text</li>
+                <li><code className="bg-white/10 px-1 rounded">`code`</code> - Inline code</li>
+                <li><code className="bg-white/10 px-1 rounded">```js code```</code> - Code block</li>
+                <li><code className="bg-white/10 px-1 rounded">- item</code> - Bullet list</li>
+                <li><code className="bg-white/10 px-1 rounded">[text](url)</code> - Link</li>
+                <li><code className="bg-white/10 px-1 rounded">![alt](url)</code> - Image</li>
+              </ul>
+            </div>
           </div>
 
-          {/* Right Column - Content */}
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Content (Markdown)</label>
-            <textarea
-              value={currentPost.content}
-              onChange={(e) => setCurrentPost({ ...currentPost, content: e.target.value })}
-              rows={20}
-              className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-indigo-500 resize-none"
-              placeholder="Write your post content in Markdown..."
-            />
+          {/* Right Column - Content Editor */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-400">Content (Markdown)</label>
+              <button
+                onClick={() => setShowPreview(!showPreview)}
+                className={`px-3 py-1 text-xs rounded-lg transition-colors ${
+                  showPreview ? 'bg-indigo-600 text-white' : 'bg-white/10 text-gray-400 hover:text-white'
+                }`}
+              >
+                {showPreview ? 'Edit' : 'Preview'}
+              </button>
+            </div>
+
+            {/* Formatting Toolbar */}
+            {!showPreview && (
+              <div className="flex flex-wrap gap-1 p-2 bg-white/5 rounded-lg border border-white/10">
+                <button
+                  onClick={() => insertMarkdown('## ', '', 'Heading')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Heading"
+                >
+                  H2
+                </button>
+                <button
+                  onClick={() => insertMarkdown('### ', '', 'Subheading')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Subheading"
+                >
+                  H3
+                </button>
+                <button
+                  onClick={() => insertMarkdown('**', '**', 'bold')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors font-bold"
+                  title="Bold"
+                >
+                  B
+                </button>
+                <button
+                  onClick={() => insertMarkdown('*', '*', 'italic')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors italic"
+                  title="Italic"
+                >
+                  I
+                </button>
+                <button
+                  onClick={() => insertMarkdown('`', '`', 'code')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors font-mono"
+                  title="Inline Code"
+                >
+                  {'</>'}
+                </button>
+                <button
+                  onClick={() => insertMarkdown('\n```javascript\n', '\n```\n', '// code here')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Code Block"
+                >
+                  Code
+                </button>
+                <button
+                  onClick={() => insertMarkdown('\n- ', '', 'List item')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Bullet List"
+                >
+                  • List
+                </button>
+                <button
+                  onClick={() => insertMarkdown('\n1. ', '', 'List item')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Numbered List"
+                >
+                  1. List
+                </button>
+                <button
+                  onClick={() => insertMarkdown('[', '](url)', 'link text')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Link"
+                >
+                  Link
+                </button>
+                <button
+                  onClick={() => insertMarkdown('![', '](image-url)', 'alt text')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Image"
+                >
+                  Image
+                </button>
+                <button
+                  onClick={() => insertMarkdown('\n> ', '', 'Quote')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Blockquote"
+                >
+                  Quote
+                </button>
+                <button
+                  onClick={() => insertMarkdown('\n---\n', '', '')}
+                  className="px-2 py-1 text-xs bg-white/10 hover:bg-white/20 text-gray-300 rounded transition-colors"
+                  title="Horizontal Rule"
+                >
+                  —
+                </button>
+              </div>
+            )}
+
+            {showPreview ? (
+              <div className="h-[500px] overflow-y-auto p-4 rounded-lg bg-white/5 border border-white/10 prose prose-invert prose-sm max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {currentPost.content || '*No content yet...*'}
+                </ReactMarkdown>
+              </div>
+            ) : (
+              <textarea
+                ref={textareaRef}
+                value={currentPost.content}
+                onChange={(e) => setCurrentPost({ ...currentPost, content: e.target.value })}
+                className="w-full h-[500px] px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-indigo-500 resize-none"
+                placeholder="Write your post content in Markdown...
+
+## Example Heading
+
+This is a paragraph with **bold** and *italic* text.
+
+- Bullet point 1
+- Bullet point 2
+
+```javascript
+const example = 'code block';
+```
+"
+              />
+            )}
           </div>
         </div>
 

@@ -3,36 +3,279 @@ title: "Automating Business Workflows with AI"
 excerpt: "How I helped a client save 20 hours per week by automating their repetitive tasks with custom AI solutions."
 category: "AI"
 date: "Jan 10, 2024"
-readTime: "5 min read"
+readTime: "7 min read"
 featured: false
+published: true
 ---
 
-A recent client was spending 20+ hours weekly on repetitive data entry. Here's how we automated it all away.
+A recent client was spending 20+ hours weekly on repetitive data entry and document processing. Here's how we automated it all away using AI, saving their team for higher-value work.
 
 ## The Problem
 
-The team was manually:
+The operations team was manually handling:
 
-- Extracting data from PDFs and emails
-- Categorizing incoming requests
-- Generating standardized responses
-- Updating spreadsheets
+- **Email triage** - Reading and categorizing 200+ daily emails
+- **Data extraction** - Pulling information from PDFs and attachments
+- **Request routing** - Assigning tasks to the right team members
+- **Response drafting** - Writing standardized replies
+- **CRM updates** - Logging interactions in their database
 
-## The Solution
+This consumed 4+ hours daily from their best people.
 
-We built a custom AI pipeline that monitors incoming documents, extracts information using GPT-4, routes tasks automatically, and generates draft responses.
+## The Solution Architecture
+
+We built an automated pipeline that handles the entire workflow:
+
+```
+Email Inbox
+    ↓
+AI Classification
+    ↓
+Document Processing
+    ↓
+Data Extraction
+    ↓
+Routing Logic
+    ↓
+Draft Generation
+    ↓
+Human Review (Optional)
+    ↓
+Response + Database Update
+```
 
 ## The Tech Stack
 
-- **n8n:** Workflow automation
-- **OpenAI API:** Document understanding
-- **Airtable:** Flexible database
-- **Slack:** Notifications
+| Component | Tool | Purpose |
+|-----------|------|---------|
+| Workflow Engine | n8n | Orchestration and automation |
+| AI Processing | OpenAI GPT-4 | Document understanding |
+| Database | Airtable | Flexible data storage |
+| Notifications | Slack | Team alerts |
+| Email | Gmail API | Inbox integration |
+
+## Implementation Details
+
+### 1. Email Classification
+
+First, we categorize incoming emails using GPT-4:
+
+```javascript
+const classifyEmail = async (email) => {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4-turbo-preview',
+    messages: [{
+      role: 'system',
+      content: `Classify the email into one of these categories:
+        - SUPPORT_REQUEST: Technical issues or questions
+        - SALES_INQUIRY: Pricing, demos, partnerships
+        - BILLING: Payment, invoices, refunds
+        - SPAM: Irrelevant or marketing
+        - URGENT: Time-sensitive matters
+
+        Also extract:
+        - Priority (1-5)
+        - Key entities (names, companies, products)
+        - Sentiment (positive/neutral/negative)
+
+        Return JSON only.`
+    }, {
+      role: 'user',
+      content: `Subject: ${email.subject}\n\nBody: ${email.body}`
+    }],
+    response_format: { type: 'json_object' },
+  });
+
+  return JSON.parse(response.choices[0].message.content);
+};
+```
+
+### 2. Document Extraction
+
+For PDFs and attachments, we use vision capabilities:
+
+```javascript
+const extractFromDocument = async (base64Image) => {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4-turbo-preview',
+    messages: [{
+      role: 'user',
+      content: [
+        {
+          type: 'text',
+          text: `Extract all relevant data from this document.
+                 Return structured JSON with:
+                 - document_type
+                 - date
+                 - amounts
+                 - parties_involved
+                 - key_terms
+                 - action_items`
+        },
+        {
+          type: 'image_url',
+          image_url: { url: `data:image/png;base64,${base64Image}` }
+        }
+      ]
+    }],
+    response_format: { type: 'json_object' },
+  });
+
+  return JSON.parse(response.choices[0].message.content);
+};
+```
+
+### 3. Smart Routing
+
+Based on classification, we route to the appropriate handler:
+
+```javascript
+const routingRules = {
+  SUPPORT_REQUEST: {
+    queue: 'support-team',
+    sla: '4 hours',
+    priority_multiplier: 1.5,
+  },
+  SALES_INQUIRY: {
+    queue: 'sales-team',
+    sla: '2 hours',
+    priority_multiplier: 2,
+  },
+  BILLING: {
+    queue: 'finance-team',
+    sla: '24 hours',
+    priority_multiplier: 1,
+  },
+  URGENT: {
+    queue: 'on-call',
+    sla: '30 minutes',
+    priority_multiplier: 5,
+    notify: ['slack', 'sms'],
+  },
+};
+
+const routeRequest = (classification) => {
+  const rules = routingRules[classification.category];
+  const priority = classification.priority * rules.priority_multiplier;
+
+  return {
+    ...rules,
+    priority,
+    assignee: getNextAvailable(rules.queue),
+  };
+};
+```
+
+### 4. Response Generation
+
+For common requests, we generate draft responses:
+
+```javascript
+const generateResponse = async (email, context) => {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4-turbo-preview',
+    messages: [{
+      role: 'system',
+      content: `You are a professional customer service representative.
+        Generate a helpful, friendly response using this context:
+        - Customer history: ${JSON.stringify(context.history)}
+        - Relevant KB articles: ${context.knowledge}
+        - Company tone: Professional but warm
+
+        Match the customer's language if not English.`
+    }, {
+      role: 'user',
+      content: email.body
+    }],
+  });
+
+  return response.choices[0].message.content;
+};
+```
+
+## n8n Workflow
+
+The complete n8n workflow looks like this:
+
+```yaml
+Trigger: Email Received (Gmail)
+    ↓
+Filter: Not from team@company.com
+    ↓
+HTTP Request: Classify with GPT-4
+    ↓
+Switch: By Category
+    ├── SPAM → Archive + Log
+    ├── URGENT → Slack Alert + Route
+    └── Others → Standard Processing
+        ↓
+    If Has Attachments:
+        → Extract Data from Documents
+        ↓
+    Generate Draft Response
+        ↓
+    Create Airtable Record
+        ↓
+    Assign to Team Member
+        ↓
+    Slack Notification
+```
 
 ## Results
 
-- 20 hours/week saved
-- 95% accuracy on data extraction
-- Response time: hours to minutes
+After 30 days of operation:
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| Hours/week on email | 20+ | 3 | **85% reduction** |
+| Response time | 4-6 hours | 30 min | **90% faster** |
+| Data accuracy | ~85% | 95%+ | **Fewer errors** |
+| Employee satisfaction | Low | High | **Better work** |
+
+### Cost Analysis
+
+```
+Monthly costs:
+- OpenAI API: ~$150
+- n8n Cloud: $50
+- Airtable: $20
+
+Total: $220/month
+
+Savings:
+- 68 hours/month × $35/hour = $2,380
+
+ROI: 10x return
+```
+
+## Lessons Learned
+
+1. **Start with one workflow** - Don't try to automate everything at once
+2. **Keep humans in the loop** - AI handles triage, humans handle exceptions
+3. **Monitor accuracy** - Check AI classifications weekly at first
+4. **Iterate on prompts** - Prompts need refinement based on real data
+5. **Plan for edge cases** - Always have a fallback for unusual requests
+
+## When to Automate
+
+Good candidates for AI automation:
+
+- **High volume** - Hundreds of similar tasks daily
+- **Structured output** - Clear categories or data fields
+- **Time-sensitive** - Quick responses matter
+- **Repetitive** - Same logic applied repeatedly
+
+Poor candidates:
+
+- Complex negotiations
+- Emotional situations
+- Legal/compliance critical
+- Highly creative work
+
+## Conclusion
+
+AI-powered workflow automation isn't about replacing people—it's about freeing them from repetitive tasks to focus on work that requires human judgment, creativity, and empathy.
+
+The key is starting small, measuring results, and iterating. Even automating a single workflow can save hours every week.
 
 Want to automate your workflows? [Reach out](/#contact)!

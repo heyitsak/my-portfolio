@@ -99,9 +99,9 @@
     border-color: var(--color-accent);
   }
 
-  /* Gradient text - warm red to orange */
+  /* Gradient text - Instagram story highlight style */
   .text-gradient {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffa726 100%);
+    background: linear-gradient(135deg, #fbbf24 0%, #ec4899 50%, #9333ea 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -109,10 +109,10 @@
   }
 
   .text-gradient:hover {
-    background: linear-gradient(135deg, #ff8e53 0%, #ffa726 50%, #ffcc02 100%);
+    background: linear-gradient(135deg, #facc15 0%, #f43f5e 50%, #7c3aed 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    filter: drop-shadow(0 0 20px rgba(255, 142, 83, 0.4));
+    filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.4));
   }
 
   /* Gradient text with glow wrapper */
@@ -127,7 +127,7 @@
     left: 0;
     top: 0;
     z-index: -1;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffa726 100%);
+    background: linear-gradient(135deg, #fbbf24 0%, #ec4899 50%, #9333ea 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -263,4 +263,54 @@
   .duration-600 {
     transition-duration: 600ms;
   }
+}
+
+/* Blog Content Styles */
+.blog-content {
+  /* Smooth reading experience */
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Code block scrollbar styling */
+.blog-content pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.blog-content pre::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.blog-content pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.blog-content pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* First paragraph after heading - no top margin */
+.blog-content h2 + p,
+.blog-content h3 + p,
+.blog-content h4 + p {
+  margin-top: 0;
+}
+
+/* Nested list styling */
+.blog-content ul ul,
+.blog-content ol ol,
+.blog-content ul ol,
+.blog-content ol ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+/* Table hover effect */
+.blog-content table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.05);
 }
