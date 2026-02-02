@@ -28,10 +28,10 @@ export default function Home() {
         <div className="w-full max-w-5xl lg:max-w-6xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16 xl:px-20 py-20 md:py-32 relative">
           <Hero />
           <About />
-          <Blog posts={posts} />
           <Services />
           <Work />
           <Testimonials />
+          <Blog posts={posts} />
           <BeyondWork />
           <Contact />
         </div>
